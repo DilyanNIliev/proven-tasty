@@ -736,6 +736,82 @@ const RECIPES = {
       {name:"питки", amount:4, unit:"бр."},
       {name:"кашкавал", amount:null, unit:"на вкус"}
     ]
+  },
+  moussaka: {
+    name: "Мусака с картофи и заливка",
+    href: "recipe-moussaka.html",
+    ingredients: [
+      {name:"свинска кайма", amount:500, unit:"г"},
+      {name:"картофи", amount:700, unit:"г"},
+      {name:"лук", amount:1, unit:"глава"},
+      {name:"олио", amount:1, unit:"с.л."},
+      {name:"сол", amount:null, unit:"на вкус"},
+      {name:"черен пипер", amount:null, unit:"на вкус"},
+      {name:"червен пипер", amount:null, unit:"на вкус"},
+      {name:"куркума", amount:null, unit:"на вкус"},
+      {name:"чубрица", amount:null, unit:"на вкус"},
+      {name:"лютеница", amount:1, unit:"с.л."},
+      {name:"пушен червен пипер", amount:null, unit:"на вкус"},
+      {name:"яйца", amount:4, unit:"бр."},
+      {name:"брашно", amount:1, unit:"с.л."},
+      {name:"кисело мляко", amount:200, unit:"г (по желание)"}
+    ]
+  },
+  chickensoup: {
+    name: "Пилешка супа с фиде",
+    href: "recipe-chicken-soup.html",
+    ingredients: [
+      {name:"пилешко месо", amount:500, unit:"г"},
+      {name:"моркови", amount:3, unit:"бр."},
+      {name:"лук", amount:1, unit:"глава"},
+      {name:"картофи", amount:4, unit:"бр."},
+      {name:"фиде", amount:100, unit:"г"},
+      {name:"сол", amount:null, unit:"на вкус"},
+      {name:"черен пипер", amount:null, unit:"на вкус"},
+      {name:"червен пипер", amount:null, unit:"на вкус"},
+      {name:"чубрица", amount:null, unit:"на вкус"},
+      {name:"куркума", amount:null, unit:"на вкус"}
+    ]
+  },
+  chickpeaeggs: {
+    name: "Нахут с яйца и домати",
+    href: "recipe-chickpea-eggs.html",
+    ingredients: [
+      {name:"нахут", amount:1, unit:"консерва"},
+      {name:"яйца", amount:4, unit:"бр."},
+      {name:"домати", amount:3, unit:"бр. (или 1 консерва)"},
+      {name:"лук", amount:1, unit:"глава"},
+      {name:"морков", amount:1, unit:"бр."},
+      {name:"сол", amount:null, unit:"на вкус"},
+      {name:"черен пипер", amount:null, unit:"на вкус"},
+      {name:"червен пипер", amount:null, unit:"на вкус"},
+      {name:"куркума", amount:null, unit:"на вкус"}
+    ]
+  },
+  cheesecake: {
+    name: "Чийзкейк с банан и шоколад (без печене)",
+    href: "recipe-cheesecake.html",
+    ingredients: [
+      {name:"смлени бисквити", amount:100, unit:"г"},
+      {name:"смлени орехи", amount:50, unit:"г"},
+      {name:"масло", amount:60, unit:"г (разтопено)"},
+      {name:"маскарпоне", amount:500, unit:"г"},
+      {name:"пудра захар", amount:60, unit:"г"},
+      {name:"есенция ванилия", amount:2, unit:"ч.л."},
+      {name:"тъмен шоколад", amount:120, unit:"г (+ за украса)"},
+      {name:"банани", amount:3, unit:"бр. (2 + 1 за украса)"}
+    ]
+  },
+  overnightoats: {
+    name: "Овесени ядки с чия и кисело мляко (за през нощта)",
+    href: "recipe-overnight-oats.html",
+    ingredients: [
+      {name:"овесени ядки", amount:5, unit:"с.л."},
+      {name:"чия семена", amount:1, unit:"с.л."},
+      {name:"кисело мляко", amount:400, unit:"г"},
+      {name:"банан", amount:1, unit:"бр."},
+      {name:"белени тиквени семки", amount:30, unit:"г"}
+    ]
   }
 };
 
@@ -901,6 +977,41 @@ const SEARCH_INDEX = [
     time: 45, kcal: 560, href: 'recipe-chili.html',
     img: 'https://images.unsplash.com/photo-1673990349292-ed2dfa7988c9?w=700&q=80',
     keywords: 'чили кон карне кайма боб питка кашкавал основни спортисти люто протеин месо мексиканско'
+  },
+  {
+    id: 'moussaka', name: 'Мусака с картофи и заливка', tag: 'Основни',
+    desc: 'Класическа домашна мусака със свинска кайма, картофи и заливка от яйца и кисело мляко.',
+    time: 70, kcal: 550, href: 'recipe-moussaka.html',
+    img: 'https://images.unsplash.com/photo-1732850430367-93eb6c2d5484?w=700&q=80',
+    keywords: 'мусака картофи кайма заливка основни традиционно българско вечеря'
+  },
+  {
+    id: 'chickensoup', name: 'Пилешка супа с фиде', tag: 'Обяд',
+    desc: 'Топла домашна пилешка супа с моркови, картофи и фиде.',
+    time: 60, kcal: 320, href: 'recipe-chicken-soup.html',
+    img: 'https://images.unsplash.com/photo-1730112696140-19e61bb43d36?w=700&q=80',
+    keywords: 'пилешка супа фиде моркови картофи бульон настинка домашно основни полезно'
+  },
+  {
+    id: 'chickpeaeggs', name: 'Нахут с яйца и домати', tag: 'Закуска',
+    desc: 'Бърза и засищаща закуска от нахут, домати и яйца.',
+    time: 25, kcal: 320, href: 'recipe-chickpea-eggs.html',
+    img: 'https://images.unsplash.com/photo-1682622110419-b671026a4536?w=700&q=80',
+    keywords: 'нахут яйца домати закуска протеин растителен бързо шакшука'
+  },
+  {
+    id: 'cheesecake', name: 'Чийзкейк с банан и шоколад (без печене)', tag: 'Десерт',
+    desc: 'Кремообразен чийзкейк с маскарпоне, тъмен шоколад и банан — без печене.',
+    time: 270, kcal: 450, href: 'recipe-cheesecake.html',
+    img: 'https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=700&q=80',
+    keywords: 'чийзкейк маскарпоне банан шоколад десерт десерти без печене сладко'
+  },
+  {
+    id: 'overnightoats', name: 'Овесени ядки с чия и кисело мляко (за през нощта)', tag: 'Закуска',
+    desc: 'Подготвяш ги вечерта, а сутринта само добавяш банан.',
+    time: 480, kcal: 370, href: 'recipe-overnight-oats.html',
+    img: 'https://images.unsplash.com/photo-1641494587136-eec74f1944ae?w=700&q=80',
+    keywords: 'овесени ядки чия кисело мляко закуска бързо без готвене банан протеин'
   },
 ];
 

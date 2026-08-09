@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Всички рецепти — Доказано Вкусно</title>
+<title>Мусака с картофи и заливка — Доказано Вкусно</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -562,250 +562,109 @@
   <a href="search.html">Търсене</a>
 </div>
 
-<div class="page-header">
-  <div class="breadcrumb"><a href="index.html">Начало</a> / Рецепти</div>
-  <h1 class="display">Всички рецепти</h1>
-  <p>Прости, високопротеинови и засищащи ястия — филтрирай по хранене и намери следващото си любимо блюдо.</p>
+<div class="page-header" style="padding-bottom:0;">
+  <div class="breadcrumb"><a href="index.html">Начало</a> / <a href="recipes.html">Рецепти</a> / Мусака с картофи и заливка</div>
+  <h1 class="display">Мусака с картофи и заливка</h1>
+  <p>Класическа домашна мусака със свинска кайма, картофи и хрупкава заливка от яйца и кисело мляко.</p>
+</div>
 
-  <div class="filters">
-    <button class="active" onclick="filterRecipes('all', this)">Всички</button>
-    <button onclick="filterRecipes('breakfast', this)">Закуска</button>
-    <button onclick="filterRecipes('lunch', this)">Обяд</button>
-    <button onclick="filterRecipes('dinner', this)">Вечеря</button>
-    <button onclick="filterRecipes('dessert', this)">Десерт</button>
+<div class="recipe-hero">
+  <div class="recipe-hero-img">
+    <img src="https://images.unsplash.com/photo-1732850430367-93eb6c2d5484?w=1400&q=80" alt="Мусака с картофи и заливка">
+  </div>
+
+  <div style="text-align:center; margin-bottom:28px;">
+    <button class="detail-add-btn" data-recipe-id="moussaka" onclick="toggleCart('moussaka', event)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      Добави в пазарски списък
+    </button>
+  </div>
+
+  <div class="recipe-meta-bar">
+    <div class="item"><div class="val">70 мин</div><div class="lbl">Общо време</div></div>
+    <div class="item"><div class="val">4</div><div class="lbl">Порции</div></div>
+    <div class="item"><div class="val">550</div><div class="lbl">Ккал / порция</div></div>
+    <div class="item"><div class="val">30г</div><div class="lbl">Протеин</div></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="box-title">
+        <div class="icon ing">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2l1.5 4M18 2l-1.5 4M4 8h16l-1.6 11.2A2 2 0 0116.4 21H7.6a2 2 0 01-2-1.8L4 8z"/></svg>
+        </div>
+        <h4>Съставки</h4>
+      </div>
+      <ul class="ing-list">
+        <li>500 г свинска кайма</li>
+        <li>700 г картофи</li>
+        <li>1 глава лук</li>
+        <li>1 с.л. олио</li>
+        <li>сол</li>
+        <li>черен пипер</li>
+        <li>червен пипер</li>
+        <li>куркума</li>
+        <li>чубрица</li>
+        <li>1 с.л. лютеница</li>
+        <li>пушен червен пипер</li>
+        <li>— за заливката —</li>
+        <li>4 яйца</li>
+        <li>1 с.л. брашно</li>
+        <li>200 г кисело мляко (по желание)</li>
+      </ul>
+    </div>
+    <div>
+      <div class="box-title">
+        <div class="icon method">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2v6a2 2 0 002 2h0a2 2 0 002-2V2M8 10v12M17 2v20"/></svg>
+        </div>
+        <h4>Начин на приготвяне</h4>
+      </div>
+      <ul class="method-list">
+        <li>Овкусете каймата с подправките.</li>
+        <li>Нарежете лука и го задушете в олиото.</li>
+        <li>Добавете каймата и запечете, докато се разпадне на трохи.</li>
+        <li>Прибавете лютеницата и чаша вода, оставете да къкри 5-6 минути.</li>
+        <li>Обелете и нарежете картофите на ситно, наредете в тава заедно с каймата и разбъркайте.</li>
+        <li>Печете на 180°C, докато картофите омекнат почти напълно.</li>
+        <li>Разбийте яйцата с брашното и киселото мляко (или вода, ако не искате мляко) до хомогенна смес.</li>
+        <li>Залейте равномерно отгоре, най-добре с лъжица, и продължете печенето до зачервяване на заливката.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note-strip">
+    ♡ Класическа домашна мусака — засищаща, ароматна и лесна за приготвяне.
   </div>
 </div>
 
-<section class="section" style="padding-top:20px;">
-  <div class="grid" id="recipe-grid">
-    <a class="card" data-cat="breakfast" href="recipe-overnight-oats.html">
-      <div class="card-img">
-        <span class="card-tag">Закуска</span>
-        <div class="cart-toggle" data-recipe-id="overnightoats" onclick="toggleCart('overnightoats', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        <img src="https://images.unsplash.com/photo-1641494587136-eec74f1944ae?w=700&q=80" alt="Овесени ядки с чия и кисело мляко">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Овесени ядки с чия и кисело мляко</h3>
-        <p>Подготвяш ги вечерта, а сутринта само добавяш банан — готова закуска без готвене.</p>
-        <div class="card-meta">
-          <span>⏱ 8 ч</span>
-          <span>🔥 370 ккал</span>
-        </div>
-      </div>
-    </a>
-    <a class="card" data-cat="dessert" href="recipe-cheesecake.html">
-      <div class="card-img">
-        <span class="card-tag">Десерт</span>
-        <div class="cart-toggle" data-recipe-id="cheesecake" onclick="toggleCart('cheesecake', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        <img src="https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=700&q=80" alt="Чийзкейк с банан и шоколад">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Чийзкейк с банан и шоколад</h3>
-        <p>Кремообразен чийзкейк с маскарпоне, тъмен шоколад и банан — без печене, само хладилник.</p>
-        <div class="card-meta">
-          <span>⏱ 4 ч 30 мин</span>
-          <span>🔥 450 ккал</span>
-        </div>
-      </div>
-    </a>
-    <a class="card" data-cat="breakfast" href="recipe-chickpea-eggs.html">
-      <div class="card-img">
-        <span class="card-tag">Закуска</span>
-        <div class="cart-toggle" data-recipe-id="chickpeaeggs" onclick="toggleCart('chickpeaeggs', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        <img src="https://images.unsplash.com/photo-1682622110419-b671026a4536?w=700&q=80" alt="Нахут с яйца и домати">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Нахут с яйца и домати</h3>
-        <p>Бърза и засищаща закуска от нахут, домати и яйца — растителен и животински протеин заедно.</p>
-        <div class="card-meta">
-          <span>⏱ 25 мин</span>
-          <span>🔥 320 ккал</span>
-        </div>
-      </div>
-    </a>
-    <a class="card" data-cat="lunch" href="recipe-chicken-soup.html">
-      <div class="card-img">
-        <span class="card-tag">Обяд</span>
-        <div class="cart-toggle" data-recipe-id="chickensoup" onclick="toggleCart('chickensoup', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        <img src="https://images.unsplash.com/photo-1730112696140-19e61bb43d36?w=700&q=80" alt="Пилешка супа с фиде">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Пилешка супа с фиде</h3>
-        <p>Топла домашна пилешка супа с моркови, картофи и фиде — класическо лекарство за душата.</p>
-        <div class="card-meta">
-          <span>⏱ 60 мин</span>
-          <span>🔥 320 ккал</span>
-        </div>
-      </div>
-    </a>
-    <a class="card" data-cat="dinner" href="recipe-moussaka.html">
-      <div class="card-img">
-        <span class="card-tag">Основни</span>
-        <div class="cart-toggle" data-recipe-id="moussaka" onclick="toggleCart('moussaka', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        <img src="https://images.unsplash.com/photo-1732850430367-93eb6c2d5484?w=700&q=80" alt="Мусака с картофи и заливка">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Мусака с картофи и заливка</h3>
-        <p>Класическа домашна мусака със свинска кайма, картофи и хрупкава заливка от яйца и кисело мляко.</p>
-        <div class="card-meta">
-          <span>⏱ 70 мин</span>
-          <span>🔥 550 ккал</span>
-        </div>
-      </div>
-    </a>
-    <a class="card" data-cat="dinner" href="recipe-chili.html">
-      <div class="card-img">
-        <span class="card-tag">Основни</span>
-        <div class="cart-toggle" data-recipe-id="kayma" onclick="toggleCart('kayma', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        <img src="https://images.unsplash.com/photo-1673990349292-ed2dfa7988c9?w=700&q=80" alt="Чили кон карне с питка и разтопен кашкавал">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Чили кон карне с питка и кашкавал</h3>
-        <p>Ароматно чили с домати, боб и подправки, поднесено в топла питка с разтопен кашкавал.</p>
-        <div class="card-meta">
-          <span>⏱ 45 мин</span>
-          <span>🔥 560 ккал</span>
-        </div>
-      </div>
-    </a>
-    <a class="card" data-cat="dinner" href="recipe-manja.html">
-      <div class="card-img">
-        <span class="card-tag">Вечеря</span>
-        <div class="cart-toggle" data-recipe-id="manja" onclick="toggleCart('manja', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        <img src="https://images.unsplash.com/photo-1604908177453-7462950a6a3b?w=700&q=80" alt="Лятна манджа с тиквички">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Лятна манджа с тиквички</h3>
-        <p>Лека зеленчукова манджа от тиквички, чушки и домати, ароматизирана с куркума и червен пипер.</p>
-        <div class="card-meta">
-          <span>⏱ 15 мин</span>
-          <span>🔥 160 ккал</span>
-        </div>
-      </div>
-    </a>
+<section class="section" style="max-width:760px; padding-top:10px;">
+  <div class="section-head" style="margin-bottom:30px;">
+    <div class="kicker">Полезно да знаеш</div>
+    <h2>Защо тази рецепта си заслужава</h2>
+    <div class="divider"></div>
+  </div>
 
-    <a class="card" data-cat="dinner" href="recipe-salmon.html">
-      <div class="card-img">
-        <span class="card-tag">Вечеря</span>
-        <div class="cart-toggle" data-recipe-id="salmon" onclick="toggleCart('salmon', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        
-        <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=700&q=80" alt="Сьомга, яйца и сладък картоф">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Сьомга, яйца и сладък картоф</h3>
-        <p>Печена сьомга, карамелизиран сладък картоф и слънчеви яйца — засищащо и високопротеиново.</p>
-        <div class="card-meta">
-          <span>⏱ 30 мин</span>
-          <span>🔥 520 ккал</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" data-cat="breakfast" href="recipe-avocado.html">
-      <div class="card-img">
-        <span class="card-tag">Закуска</span>
-        <div class="cart-toggle" data-recipe-id="avocado" onclick="toggleCart('avocado', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        
-        <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=700&q=80" alt="Купа с авокадо и яйца">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Купа с авокадо, киноа и яйце</h3>
-        <p>Кремообразно авокадо, поширано яйце и печена киноа — балансирана закуска с бавни въглехидрати.</p>
-        <div class="card-meta">
-          <span>⏱ 20 мин</span>
-          <span>🔥 380 ккал</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" data-cat="lunch" href="recipe-chicken.html">
-      <div class="card-img">
-        <span class="card-tag">Обяд</span>
-        <div class="cart-toggle" data-recipe-id="chicken" onclick="toggleCart('chicken', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        
-        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=700&q=80" alt="Пилешка салата">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Пилешка купа с киноа и зеленчуци</h3>
-        <p>Печено пилешко филе, печени зеленчуци и лимонов дресинг — готово за 25 минути.</p>
-        <div class="card-meta">
-          <span>⏱ 25 мин</span>
-          <span>🔥 420 ккал</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" data-cat="dinner" href="recipe-tuna.html">
-      <div class="card-img">
-        <span class="card-tag">Вечеря</span>
-        <div class="cart-toggle" data-recipe-id="tuna" onclick="toggleCart('tuna', event)" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        
-        <img src="https://images.unsplash.com/photo-1710106687822-999dbeb73dee?w=700&q=80" alt="Риба тон с ориз">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Риба тон с кафяв ориз и броколи</h3>
-        <p>Богата на омега-3 вечеря с хрупкави броколи и сусамов дресинг.</p>
-        <div class="card-meta">
-          <span>⏱ 30 мин</span>
-          <span>🔥 460 ккал</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" data-cat="breakfast" href="#">
-      <div class="card-img">
-        <span class="card-tag">Закуска</span>
-        <img src="https://images.unsplash.com/photo-1648061930045-e9fdd171c052?w=700&q=80" alt="Овесена каша с плодове">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Протеинова овесена каша с горски плодове</h3>
-        <p>Овесени ядки, суроватъчен протеин и пресни горски плодове — засищаща и сладка закуска.</p>
-        <div class="card-meta">
-          <span>⏱ 10 мин</span>
-          <span>🔥 340 ккал</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" data-cat="lunch" href="#">
-      <div class="card-img">
-        <span class="card-tag">Обяд</span>
-        <img src="https://images.unsplash.com/photo-1654199903998-e49181b41a95?w=700&q=80" alt="Купа с нахут и зеленчуци">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Купа с печен нахут и зеленчуци</h3>
-        <p>Хрупкав печен нахут, печени тиквички и тахан дресинг — растителен протеин без компромис във вкуса.</p>
-        <div class="card-meta">
-          <span>⏱ 25 мин</span>
-          <span>🔥 400 ккал</span>
-        </div>
-      </div>
-    </a>
-
+  <div style="display:flex; flex-direction:column; gap:26px;">
+    <div>
+      <h4 class="display" style="color:var(--forest); font-size:1.1rem; margin-bottom:8px;">Защо е полезна</h4>
+      <p style="color:#4a4736; line-height:1.75; font-size:0.95rem;">Свинската кайма е добър източник на протеин, витамин B1 и цинк, а картофите носят калий и сложни въглехидрати за трайна енергия. Яйцата в заливката добавят допълнителен протеин и холин, а куркумата е позната с противовъзпалителните си свойства.</p>
+    </div>
+    <div>
+      <h4 class="display" style="color:var(--forest); font-size:1.1rem; margin-bottom:8px;">Кога е най-подходящо да се яде</h4>
+      <p style="color:#4a4736; line-height:1.75; font-size:0.95rem;">Засищащо основно ястие за обяд или вечеря, особено в по-хладните месеци. Комбинацията от протеин и въглехидрати я прави добър избор след активен ден, когато тялото има нужда от пълноценно хранене.</p>
+    </div>
+    <div>
+      <h4 class="display" style="color:var(--forest); font-size:1.1rem; margin-bottom:8px;">Какво дава на тялото</h4>
+      <p style="color:#4a4736; line-height:1.75; font-size:0.95rem;">Едно хранене осигурява около 30 г протеин, калий от картофите и калций от киселото мляко в заливката, при добър баланс между засищане и хранителна стойност.</p>
+    </div>
+    <div>
+      <h4 class="display" style="color:var(--forest); font-size:1.1rem; margin-bottom:8px;">Защо домашно приготвеното е по-полезно от фастфууда</h4>
+      <p style="color:#4a4736; line-height:1.75; font-size:0.95rem;">За разлика от готовите замразени мусаки от магазина, тук контролираш количеството мазнина, сол и качеството на месото. Заливката е от истински яйца и кисело мляко, без овкусители, сгъстители или консерванти.</p>
+    </div>
   </div>
 </section>
+
 
 <section class="cta-band" id="subscribe">
   <h2 class="display">Нова рецепта всяка седмица</h2>
@@ -834,20 +693,6 @@
     © 2026 Доказано Вкусно — Приготвено с грижа за твоето хранене.
   </div>
 </footer>
-
-<script>
-function filterRecipes(cat, btn){
-  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('#recipe-grid .card').forEach(card => {
-    if(cat === 'all' || card.dataset.cat === cat){
-      card.style.display = 'flex';
-    } else {
-      card.style.display = 'none';
-    }
-  });
-}
-</script>
 
 <script>
 // ---- Shared recipe ingredient data ----
