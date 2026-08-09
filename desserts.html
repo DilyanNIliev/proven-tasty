@@ -590,9 +590,23 @@
 
 <section class="section" style="padding-top:20px;">
   <div class="grid">
-  <div class="shop-empty" style="grid-column: 1 / -1;">
-    Скоро тук ще има десерти. Ако имаш любима рецепта, изпрати ми попълнения темплейт и ще я добавя.
-  </div>
+    <a class="card" href="recipe-cheesecake.html">
+      <div class="card-img">
+        <span class="card-tag">Десерт</span>
+        <div class="cart-toggle" data-recipe-id="cheesecake" onclick="toggleCart('cheesecake', event)" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <img src="https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=700&q=80" alt="Чийзкейк с банан и шоколад">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Чийзкейк с банан и шоколад</h3>
+        <p>Кремообразен чийзкейк с маскарпоне, тъмен шоколад и банан — без печене, само хладилник.</p>
+        <div class="card-meta">
+          <span>⏱ 4 ч 30 мин</span>
+          <span>🔥 450 ккал</span>
+        </div>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -730,6 +744,82 @@ const RECIPES = {
       {name:"кориандър или магданоз", amount:null, unit:"на вкус"},
       {name:"питки", amount:4, unit:"бр."},
       {name:"кашкавал", amount:null, unit:"на вкус"}
+    ]
+  },
+  moussaka: {
+    name: "Мусака с картофи и заливка",
+    href: "recipe-moussaka.html",
+    ingredients: [
+      {name:"свинска кайма", amount:500, unit:"г"},
+      {name:"картофи", amount:700, unit:"г"},
+      {name:"лук", amount:1, unit:"глава"},
+      {name:"олио", amount:1, unit:"с.л."},
+      {name:"сол", amount:null, unit:"на вкус"},
+      {name:"черен пипер", amount:null, unit:"на вкус"},
+      {name:"червен пипер", amount:null, unit:"на вкус"},
+      {name:"куркума", amount:null, unit:"на вкус"},
+      {name:"чубрица", amount:null, unit:"на вкус"},
+      {name:"лютеница", amount:1, unit:"с.л."},
+      {name:"пушен червен пипер", amount:null, unit:"на вкус"},
+      {name:"яйца", amount:4, unit:"бр."},
+      {name:"брашно", amount:1, unit:"с.л."},
+      {name:"кисело мляко", amount:200, unit:"г (по желание)"}
+    ]
+  },
+  chickensoup: {
+    name: "Пилешка супа с фиде",
+    href: "recipe-chicken-soup.html",
+    ingredients: [
+      {name:"пилешко месо", amount:500, unit:"г"},
+      {name:"моркови", amount:3, unit:"бр."},
+      {name:"лук", amount:1, unit:"глава"},
+      {name:"картофи", amount:4, unit:"бр."},
+      {name:"фиде", amount:100, unit:"г"},
+      {name:"сол", amount:null, unit:"на вкус"},
+      {name:"черен пипер", amount:null, unit:"на вкус"},
+      {name:"червен пипер", amount:null, unit:"на вкус"},
+      {name:"чубрица", amount:null, unit:"на вкус"},
+      {name:"куркума", amount:null, unit:"на вкус"}
+    ]
+  },
+  chickpeaeggs: {
+    name: "Нахут с яйца и домати",
+    href: "recipe-chickpea-eggs.html",
+    ingredients: [
+      {name:"нахут", amount:1, unit:"консерва"},
+      {name:"яйца", amount:4, unit:"бр."},
+      {name:"домати", amount:3, unit:"бр. (или 1 консерва)"},
+      {name:"лук", amount:1, unit:"глава"},
+      {name:"морков", amount:1, unit:"бр."},
+      {name:"сол", amount:null, unit:"на вкус"},
+      {name:"черен пипер", amount:null, unit:"на вкус"},
+      {name:"червен пипер", amount:null, unit:"на вкус"},
+      {name:"куркума", amount:null, unit:"на вкус"}
+    ]
+  },
+  cheesecake: {
+    name: "Чийзкейк с банан и шоколад (без печене)",
+    href: "recipe-cheesecake.html",
+    ingredients: [
+      {name:"смлени бисквити", amount:100, unit:"г"},
+      {name:"смлени орехи", amount:50, unit:"г"},
+      {name:"масло", amount:60, unit:"г (разтопено)"},
+      {name:"маскарпоне", amount:500, unit:"г"},
+      {name:"пудра захар", amount:60, unit:"г"},
+      {name:"есенция ванилия", amount:2, unit:"ч.л."},
+      {name:"тъмен шоколад", amount:120, unit:"г (+ за украса)"},
+      {name:"банани", amount:3, unit:"бр. (2 + 1 за украса)"}
+    ]
+  },
+  overnightoats: {
+    name: "Овесени ядки с чия и кисело мляко (за през нощта)",
+    href: "recipe-overnight-oats.html",
+    ingredients: [
+      {name:"овесени ядки", amount:5, unit:"с.л."},
+      {name:"чия семена", amount:1, unit:"с.л."},
+      {name:"кисело мляко", amount:400, unit:"г"},
+      {name:"банан", amount:1, unit:"бр."},
+      {name:"белени тиквени семки", amount:30, unit:"г"}
     ]
   }
 };
