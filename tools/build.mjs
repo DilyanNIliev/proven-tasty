@@ -58,8 +58,12 @@ function head({ title, description, canonical, image, jsonld = [], extraHead = '
   const slug = canonical === 'index.html' ? '' : canonical;
   const url = site.url ? site.url.replace(/\/$/, '') + '/' + slug : '';
   const img = image || '';
-  const ogImage = img && site.url && !/^https?:/.test(img)
-    ? site.url.replace(/\/$/, '') + '/' + img : img;
+  // og:image трябва да е пълен адрес — при относителна снимка без зададен
+  // домейн просто пропускаме тага, вместо да пишем невалиден адрес
+  const relative = img && !/^https?:/.test(img);
+  const ogImage = relative
+    ? (site.url ? site.url.replace(/\/$/, '') + '/' + img : '')
+    : img;
 
   return `<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -480,7 +484,18 @@ function buildDataFile() {
 }
 
 function buildSitemap() {
-  if (!site.url) return;
+  // Без зададен домейн sitemap-ът е безсмислен (адресите в него трябва да са
+  // пълни). Трием и стар файл, за да не остане да сочи към несъществуващ адрес.
+  if (!site.url) {
+    for (const f of ['sitemap.xml', 'robots.txt']) {
+      const full = path.join(ROOT, f);
+      if (fs.existsSync(full)) {
+        fs.unlinkSync(full);
+        console.log('  изтрит остарял файл:', f);
+      }
+    }
+    return;
+  }
   const base = site.url.replace(/\/$/, '');
   const urls = [
     ...PAGES.map((p) => ({ loc: p.file === 'index.html' ? '' : p.file, pri: p.file === 'index.html' ? '1.0' : '0.7' })),
@@ -502,15 +517,19 @@ function build() {
   for (const p of PAGES) {
     const raw = read(path.join('content', p.file));
     const body = expandPlaceholders(raw);
+    // SearchAction изисква пълен адрес, затова го добавяме само когато има домейн
     const jsonld = p.file === 'index.html'
       ? [{
           '@context': 'https://schema.org', '@type': 'WebSite',
-          name: site.name, url: site.url, description: site.description, inLanguage: site.lang,
-          potentialAction: {
-            '@type': 'SearchAction',
-            target: `${site.url.replace(/\/$/, '')}/search.html?q={search_term_string}`,
-            'query-input': 'required name=search_term_string',
-          },
+          name: site.name, description: site.description, inLanguage: site.lang,
+          ...(site.url ? {
+            url: site.url,
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: `${site.url.replace(/\/$/, '')}/search.html?q={search_term_string}`,
+              'query-input': 'required name=search_term_string',
+            },
+          } : {}),
         }]
       : [];
     write(p.file, page({ ...p, body, jsonld, canonical: p.file }));
