@@ -1,0 +1,47 @@
+name: Генерирай сайта
+
+# Всяка промяна в данните или съдържанието пресъздава HTML страниците автоматично.
+on:
+  push:
+    paths:
+      - 'data/**'
+      - 'content/**'
+      - 'tools/**'
+      - 'assets/**'
+      - 'images/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # без това всяко авто-комитване би пуснало нов билд
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Генерирай страниците
+        run: node tools/build.mjs
+
+      - name: Запиши промените
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "Генерирани страници [skip ci]"
+            git push
+          else
+            echo "Няма промени за записване."
+          fi

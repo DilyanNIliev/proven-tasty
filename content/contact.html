@@ -1,0 +1,36 @@
+<div class="page-header">
+  <div class="breadcrumb"><a href="index.html">Начало</a> / Контакти</div>
+  <h1 class="display">Свържи се с мен</h1>
+  <p>Имаш въпрос, предложение за рецепта или просто искаш да кажеш здрасти? Пиши ми — чета всичко лично.</p>
+</div>
+
+<section class="section" style="padding-top:10px;">
+  <div class="contact-wrap">
+    <form class="contact-form" onsubmit="event.preventDefault(); alert('Благодаря! Съобщението е изпратено (демо форма).');">
+      <div>
+        <label for="c-name">Име</label>
+        <input type="text" id="c-name" required>
+      </div>
+      <div>
+        <label for="c-email">Имейл</label>
+        <input type="email" id="c-email" required>
+      </div>
+      <div>
+        <label for="c-msg">Съобщение</label>
+        <textarea id="c-msg" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Изпрати съобщение</button>
+    </form>
+
+    <div class="contact-info">
+      <div class="row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+        hello@dokazanovkusno.bg
+      </div>
+      <div class="row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Отговарям обикновено до 2 работни дни
+      </div>
+    </div>
+  </div>
+</section>
