@@ -1,28 +1,25 @@
-name: Генерирай сайта
+name: Генерирай и публикувай сайта
 
-# Всяка промяна в данните или съдържанието пресъздава HTML страниците автоматично.
+# Всяка промяна в main пресъздава HTML страниците и ги качва в GitHub Pages.
 on:
   push:
-    paths:
-      - 'data/**'
-      - 'content/**'
-      - 'tools/**'
-      - 'assets/**'
-      - 'images/**'
-      - '.github/workflows/build.yml'
+    branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write   # за записване на генерираните страници
+  pages: write      # за публикуване в GitHub Pages
+  id-token: write   # изисква се от deploy-pages
 
 concurrency:
-  group: build-${{ github.ref }}
-  cancel-in-progress: true
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # без това всяко авто-комитване би пуснало нов билд
+    # без това всяко авто-комитване би пуснало нов билд в безкраен цикъл
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +31,8 @@ jobs:
       - name: Генерирай страниците
         run: node tools/build.mjs
 
-      - name: Запиши промените
+      - name: Запиши генерираните страници обратно в хранилището
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -45,3 +43,38 @@ jobs:
           else
             echo "Няма промени за записване."
           fi
+
+      # Събираме само това, което трябва да е публично.
+      # Папка data/ остава, защото admin.html чете data/recipes.json.
+      - name: Подготви файловете за качване
+        run: |
+          mkdir -p _site
+          rsync -a --exclude '_site' \
+                   --exclude '.git' \
+                   --exclude '.github' \
+                   --exclude 'tools' \
+                   --exclude 'content' \
+                   --exclude 'node_modules' \
+                   --exclude 'package.json' \
+                   --exclude 'README.md' \
+                   ./ _site/
+          ls _site
+
+      - uses: actions/configure-pages@v5
+        if: github.ref == 'refs/heads/main'
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
