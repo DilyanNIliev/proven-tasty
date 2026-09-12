@@ -1,0 +1,23 @@
+<div class="page-header" style="padding-bottom:0;">
+  <h1 class="display">Търси рецепта</h1>
+  <p>Търси по име, съставка или категория — напр. "пилешко", "закуска" или "протеин".</p>
+
+  <div class="search-box" style="margin-top:26px;">
+    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input type="text" id="search-input" aria-label="Търсене на рецепта" placeholder="напр. сьомга, закуска, протеин..." autofocus>
+  </div>
+
+  <div class="search-tags">
+    <button onclick="setQuery('основни')">Основни</button>
+    <button onclick="setQuery('закуски')">Закуски</button>
+    <button onclick="setQuery('салати')">Салати</button>
+    <button onclick="setQuery('десерти')">Десерти</button>
+    <button onclick="setQuery('спортисти')">За спортисти</button>
+    <button onclick="setQuery('полезно')">Полезно</button>
+  </div>
+</div>
+
+<section class="section" style="padding-top:10px;">
+  <div id="search-count" class="search-count"></div>
+  <div class="grid" id="search-results"></div>
+</section>

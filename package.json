@@ -1,0 +1,12 @@
+{
+  "name": "proven-tasty",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Доказано Вкусно — сайт с рецепти, генериран от data/recipes.json",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "serve": "python3 -m http.server 8000",
+    "start": "node tools/build.mjs && python3 -m http.server 8000"
+  },
+  "license": "MIT"
+}

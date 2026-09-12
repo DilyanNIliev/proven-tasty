@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Добави рецепта — Доказано Вкусно</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='19' font-size='19'>🥄</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .admin-wrap{ max-width:1180px; margin:0 auto; padding:28px 24px 80px; position:relative; z-index:1; }
+  .admin-head{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:26px; }
+  .admin-head h1{ font-family:'Playfair Display',serif; color:var(--forest); font-size:1.8rem; }
+  .admin-head .sub{ color:var(--muted); font-size:0.9rem; margin-top:4px; }
+
+  .admin-grid{ display:grid; grid-template-columns: 1.35fr 1fr; gap:28px; align-items:start; }
+  @media (max-width: 980px){ .admin-grid{ grid-template-columns:1fr; } }
+
+  .panel{
+    background:var(--cream-2); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 22px 26px; margin-bottom:20px;
+  }
+  .panel > h2{
+    font-family:'Playfair Display',serif; color:var(--forest); font-size:1.15rem;
+    margin-bottom:4px; display:flex; align-items:center; gap:9px;
+  }
+  .panel > .hint{ color:var(--muted); font-size:0.83rem; margin-bottom:16px; line-height:1.5; }
+  .panel .step-num{
+    width:24px; height:24px; border-radius:50%; background:var(--forest); color:var(--cream-2);
+    font-size:0.75rem; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+    font-family:'Jost',sans-serif;
+  }
+
+  .row{ display:grid; gap:14px; margin-bottom:14px; }
+  .row.c2{ grid-template-columns:1fr 1fr; }
+  .row.c3{ grid-template-columns:1fr 1fr 1fr; }
+  .row.c4{ grid-template-columns:1fr 1fr 1fr 1fr; }
+  @media (max-width: 640px){ .row.c2,.row.c3,.row.c4{ grid-template-columns:1fr; } }
+
+  label.field{ display:block; }
+  label.field > span{
+    display:block; font-size:0.76rem; letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--forest-dim); margin-bottom:6px;
+  }
+  input[type=text], input[type=number], input[type=url], input[type=password], textarea, select{
+    width:100%; padding:11px 13px; font-family:'Jost',sans-serif; font-size:0.93rem;
+    border:1px solid var(--line); border-radius:3px; background:var(--cream-3); color:var(--ink);
+  }
+  textarea{ min-height:110px; resize:vertical; line-height:1.6; }
+  input:focus, textarea:focus, select:focus{ outline:none; border-color:var(--forest); box-shadow:0 0 0 3px rgba(47,74,59,.12); }
+  .help{ font-size:0.78rem; color:var(--muted); margin-top:5px; line-height:1.5; }
+
+  .checks{ display:flex; flex-wrap:wrap; gap:10px; }
+  .checks label{
+    display:inline-flex; align-items:center; gap:7px; padding:8px 13px;
+    border:1px solid var(--line); border-radius:20px; background:var(--cream-3);
+    font-size:0.86rem; cursor:pointer; user-select:none;
+  }
+  .checks label:has(input:checked){ background:var(--forest); color:var(--cream-2); border-color:var(--forest); }
+  .checks input{ accent-color:var(--clay); }
+
+  .btn-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+  button.ui{
+    padding:11px 18px; border-radius:3px; border:1px solid var(--line);
+    background:var(--cream-3); color:var(--ink); cursor:pointer;
+    font-family:'Jost',sans-serif; font-size:0.87rem; transition:all .2s var(--ease);
+  }
+  button.ui:hover{ border-color:var(--clay); color:var(--clay); }
+  button.ui.primary{ background:var(--forest); border-color:var(--forest); color:var(--cream-2); }
+  button.ui.primary:hover{ background:var(--forest-dim); color:var(--cream-2); }
+  button.ui.clay{ background:var(--clay); border-color:var(--clay); color:#fff; }
+  button.ui.clay:hover{ background:var(--clay-dim); color:#fff; }
+  button.ui.small{ padding:6px 11px; font-size:0.8rem; }
+  button.ui:disabled{ opacity:.5; cursor:not-allowed; }
+
+  /* съставки */
+  .ing-rows{ display:flex; flex-direction:column; gap:8px; }
+  .ing-row{ display:grid; grid-template-columns: 78px 110px 1fr 34px; gap:8px; align-items:center; }
+  .ing-row.is-section{ grid-template-columns: 1fr 34px; }
+  .ing-row input{ padding:9px 11px; font-size:0.88rem; }
+  .ing-row .del{
+    width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+    background:transparent; color:var(--muted); cursor:pointer; line-height:1;
+  }
+  .ing-row .del:hover{ border-color:var(--clay); color:var(--clay); }
+  .ing-row.is-section input{ background:rgba(185,152,87,.1); border-color:var(--gold); font-style:italic; }
+  @media (max-width: 640px){
+    .ing-row{ grid-template-columns: 60px 84px 1fr 30px; gap:5px; }
+    .ing-row input{ padding:8px; font-size:0.8rem; }
+  }
+
+  /* снимка */
+  .drop{
+    border:2px dashed var(--line); border-radius:var(--radius); padding:26px 20px;
+    text-align:center; color:var(--muted); cursor:pointer; transition:all .2s var(--ease);
+    background:var(--cream-3);
+  }
+  .drop:hover, .drop.over{ border-color:var(--clay); background:rgba(182,90,38,.04); color:var(--clay); }
+  .img-preview{ margin-top:14px; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); display:none; }
+  .img-preview img{ width:100%; display:block; aspect-ratio:4/3; object-fit:cover; }
+  .img-meta{ font-size:0.78rem; color:var(--muted); padding:8px 10px; background:var(--cream-2); }
+
+  /* преглед */
+  .preview-col{ position:sticky; top:80px; }
+  .preview-col .card{ max-width:340px; }
+  .out{
+    width:100%; min-height:220px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:0.74rem; line-height:1.5; white-space:pre; overflow:auto;
+    background:#2B2A22; color:#E8E3D4; border:none; border-radius:3px; padding:14px;
+  }
+  .status{
+    margin-top:12px; padding:11px 14px; border-radius:3px; font-size:0.86rem; display:none; line-height:1.5;
+  }
+  .status.ok{ display:block; background:rgba(47,74,59,.1); color:var(--forest); border:1px solid var(--forest-dim); }
+  .status.err{ display:block; background:rgba(182,90,38,.1); color:var(--clay); border:1px solid var(--clay); }
+  .status.info{ display:block; background:rgba(185,152,87,.12); color:#6d5a2f; border:1px solid var(--gold); }
+
+  .recipe-list{ display:flex; flex-direction:column; gap:6px; max-height:300px; overflow:auto; }
+  .recipe-list button{
+    text-align:left; padding:9px 12px; border:1px solid var(--line); border-radius:3px;
+    background:var(--cream-3); cursor:pointer; font-family:'Jost',sans-serif; font-size:0.86rem;
+    display:flex; justify-content:space-between; gap:10px; align-items:center;
+  }
+  .recipe-list button:hover{ border-color:var(--clay); color:var(--clay); }
+  .recipe-list .meta{ font-size:0.75rem; color:var(--muted); }
+
+  details.adv{ margin-top:10px; }
+  details.adv > summary{
+    cursor:pointer; font-size:0.85rem; color:var(--forest-dim); padding:8px 0;
+    list-style:none; display:flex; align-items:center; gap:6px;
+  }
+  details.adv > summary::before{ content:"▸"; transition:transform .2s; }
+  details.adv[open] > summary::before{ transform:rotate(90deg); }
+  .warn-box{
+    background:rgba(185,152,87,.12); border:1px solid var(--gold); border-radius:3px;
+    padding:12px 14px; font-size:0.82rem; color:#6d5a2f; line-height:1.55; margin-bottom:14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="admin-wrap">
+
+  <div class="admin-head">
+    <div>
+      <h1>Добави рецепта</h1>
+      <div class="sub">Попълваш веднъж — рецептата се появява в менютата, търсенето, пазарския списък и Google.</div>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-ghost" href="index.html">← Към сайта</a>
+    </div>
+  </div>
+
+  <div class="admin-grid">
+
+    <!-- ================= ЛЯВА КОЛОНА: ФОРМА ================= -->
+    <div>
+
+      <div class="panel">
+        <h2><span class="step-num">1</span> Основно</h2>
+        <div class="hint">Заглавието и краткото описание са това, което хората виждат в менютата и в Google.</div>
+
+        <label class="field" style="margin-bottom:14px;">
+          <span>Заглавие на рецептата *</span>
+          <input type="text" id="f-title" placeholder="напр. Пилешко с ориз и зеленчуци">
+        </label>
+
+        <div class="row c2">
+          <label class="field">
+            <span>Адрес на страницата (slug)</span>
+            <input type="text" id="f-slug" placeholder="pileshko-s-oriz">
+            <div class="help">Генерира се автоматично. Файлът ще е <code id="slug-file">recipe-….html</code></div>
+          </label>
+          <label class="field">
+            <span>Заглавие за картичката</span>
+            <input type="text" id="f-cardTitle" placeholder="по-кратък вариант (по желание)">
+          </label>
+        </div>
+
+        <label class="field" style="margin-bottom:14px;">
+          <span>Кратко описание (за картичката и Google) *</span>
+          <textarea id="f-excerpt" style="min-height:70px" placeholder="Едно изречение — какво е ястието и защо си заслужава."></textarea>
+        </label>
+
+        <label class="field">
+          <span>Водещ текст (в началото на страницата)</span>
+          <textarea id="f-lead" style="min-height:70px" placeholder="Ако го оставиш празно, се използва краткото описание."></textarea>
+        </label>
+      </div>
+
+      <div class="panel">
+        <h2><span class="step-num">2</span> Снимка</h2>
+        <div class="hint">Провлачи файл или избери снимка. Автоматично се смалява и компресира, за да се зарежда бързо.</div>
+
+        <div class="drop" id="drop">
+          <strong>Провлачи снимка тук</strong> или кликни, за да избереш<br>
+          <span style="font-size:0.8rem">JPG / PNG / WebP — препоръчително хоризонтална</span>
+        </div>
+        <input type="file" id="f-file" accept="image/*" hidden>
+
+        <div class="img-preview" id="img-preview">
+          <img id="img-el" alt="Преглед">
+          <div class="img-meta" id="img-meta"></div>
+        </div>
+
+        <details class="adv">
+          <summary>Или посочи адрес на снимка (URL)</summary>
+          <label class="field" style="margin-top:8px;">
+            <span>URL на снимката</span>
+            <input type="url" id="f-imageUrl" placeholder="https://...">
+          </label>
+        </details>
+
+        <label class="field" style="margin-top:14px;">
+          <span>Описание на снимката (alt — за Google и незрящи)</span>
+          <input type="text" id="f-imageAlt" placeholder="напр. Чиния с пилешко и ориз">
+        </label>
+      </div>
+
+      <div class="panel">
+        <h2><span class="step-num">3</span> Категории и числа</h2>
+        <div class="hint">Тук решаваш в кои менюта да се появи рецептата. Отмятай всички, които пасват.</div>
+
+        <label class="field" style="margin-bottom:16px;">
+          <span>В кои менюта да излиза *</span>
+          <div class="checks" id="f-categories"></div>
+        </label>
+
+        <div class="row c2">
+          <label class="field">
+            <span>Вид хранене (за филтъра) *</span>
+            <select id="f-meal"></select>
+          </label>
+          <label class="field">
+            <span>Етикет върху снимката</span>
+            <input type="text" id="f-badge" placeholder="Закуска / Обяд / Вечеря / Десерт">
+          </label>
+        </div>
+
+        <div class="row c4">
+          <label class="field">
+            <span>Време (минути) *</span>
+            <input type="number" id="f-time" min="1" placeholder="30">
+          </label>
+          <label class="field">
+            <span>Порции *</span>
+            <input type="number" id="f-servings" min="1" value="4">
+          </label>
+          <label class="field">
+            <span>Ккал / порция</span>
+            <input type="number" id="f-kcal" min="0" placeholder="420">
+          </label>
+          <label class="field">
+            <span>Протеин</span>
+            <input type="text" id="f-protein" placeholder="32г">
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Ключови думи за търсенето</span>
+          <input type="text" id="f-keywords" placeholder="пилешко ориз зеленчуци обяд протеин бързо">
+          <div class="help">Разделени с интервал. Помагат на търсачката в сайта да намери рецептата.</div>
+        </label>
+      </div>
+
+      <div class="panel">
+        <h2><span class="step-num">4</span> Съставки</h2>
+        <div class="hint">Количеството и мярката се използват за автоматичния пазарски списък. Остави количеството празно за „на вкус“.</div>
+
+        <label class="field" style="margin-bottom:12px;">
+          <span>Бърз начин — постави целия списък наведнъж</span>
+          <textarea id="f-ingPaste" style="min-height:90px" placeholder="500 г пилешко филе&#10;1 чаша ориз&#10;2 бр. чушки&#10;сол&#10;черен пипер&#10;--- за соса ---&#10;2 с.л. соев сос"></textarea>
+          <div class="help">Един ред = една съставка. Ред от вида <code>--- за соса ---</code> става подзаглавие.</div>
+        </label>
+        <div class="btn-row" style="margin-bottom:16px;">
+          <button class="ui primary" type="button" id="btn-parse-ing">Разчети списъка ↓</button>
+        </div>
+
+        <div class="ing-rows" id="ing-rows"></div>
+        <div class="btn-row">
+          <button class="ui small" type="button" id="btn-add-ing">+ Съставка</button>
+          <button class="ui small" type="button" id="btn-add-sec">+ Подзаглавие</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2><span class="step-num">5</span> Приготвяне</h2>
+        <div class="hint">Една стъпка на ред. Номерата се слагат автоматично.</div>
+        <label class="field" style="margin-bottom:14px;">
+          <span>Стъпки *</span>
+          <textarea id="f-steps" style="min-height:150px" placeholder="Нарежете пилешкото на ивици.&#10;Запържете в загрят тиган 5 минути.&#10;Добавете ориза и водата и варете 15 минути."></textarea>
+        </label>
+        <label class="field">
+          <span>Кратка бележка накрая (по желание)</span>
+          <input type="text" id="f-note" placeholder="♡ Става и с кафяв ориз — само времето се удължава с 10 минути.">
+        </label>
+      </div>
+
+      <div class="panel">
+        <h2><span class="step-num">6</span> „Защо си заслужава“ <span style="font-weight:400;font-size:.8rem;color:var(--muted)">(по желание)</span></h2>
+        <div class="hint">Тези текстове дават стойност на страницата и помагат много за класирането в Google.</div>
+        <div id="why-rows" style="display:flex; flex-direction:column; gap:14px;"></div>
+        <div class="btn-row">
+          <button class="ui small" type="button" id="btn-add-why">+ Секция</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= ДЯСНА КОЛОНА ================= -->
+    <div class="preview-col">
+
+      <div class="panel">
+        <h2>Как ще изглежда</h2>
+        <div class="hint">Така ще се вижда рецептата в менютата.</div>
+        <div id="preview"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Запази</h2>
+        <div class="hint">Избери един от двата начина. Първият е най-бърз, ако имаш достъп до GitHub.</div>
+
+        <div class="btn-row">
+          <button class="ui clay" type="button" id="btn-github">Публикувай в GitHub</button>
+          <button class="ui primary" type="button" id="btn-download">Изтегли recipes.json</button>
+          <button class="ui" type="button" id="btn-copy">Копирай рецептата</button>
+        </div>
+        <div class="status" id="status"></div>
+
+        <details class="adv" id="gh-settings">
+          <summary>Настройки за GitHub</summary>
+          <div class="warn-box">
+            Токенът се пази само в този браузър (localStorage) и се праща единствено към api.github.com.
+            Използвай <strong>fine-grained token</strong> само за това хранилище с права
+            <strong>Contents: Read and write</strong>. Не отваряй тази страница на чужд компютър.
+          </div>
+          <div class="row c2">
+            <label class="field"><span>Потребител / организация</span><input type="text" id="gh-owner" placeholder="DilyanNIliev"></label>
+            <label class="field"><span>Хранилище</span><input type="text" id="gh-repo" placeholder="proven-tasty"></label>
+          </div>
+          <div class="row c2">
+            <label class="field"><span>Клон (branch)</span><input type="text" id="gh-branch" placeholder="main"></label>
+            <label class="field"><span>Токен</span><input type="password" id="gh-token" placeholder="github_pat_..."></label>
+          </div>
+          <div class="btn-row">
+            <button class="ui small" type="button" id="btn-gh-save">Запази настройките</button>
+            <button class="ui small" type="button" id="btn-gh-forget">Изтрий токена</button>
+          </div>
+        </details>
+
+        <details class="adv">
+          <summary>Виж данните (JSON)</summary>
+          <textarea class="out" id="json-out" readonly style="margin-top:10px;"></textarea>
+        </details>
+      </div>
+
+      <div class="panel">
+        <h2>Съществуващи рецепти</h2>
+        <div class="hint">Кликни, за да редактираш. Промените заместват старата рецепта.</div>
+        <div class="recipe-list" id="recipe-list"><div class="help">Зареждане…</div></div>
+        <div class="btn-row" style="margin-top:12px;">
+          <button class="ui small" type="button" id="btn-new">+ Нова празна рецепта</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="assets/recipes-data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- конфигурация ---------- */
+  var CATEGORIES = [
+    { slug:'salads',    label:'Салати' },
+    { slug:'mains',     label:'Основни' },
+    { slug:'breakfast', label:'Закуски' },
+    { slug:'desserts',  label:'Десерти' },
+    { slug:'athletes',  label:'За спортисти' }
+  ];
+  var MEALS = [
+    { key:'breakfast', label:'Закуска' },
+    { key:'lunch',     label:'Обяд' },
+    { key:'dinner',    label:'Вечеря' },
+    { key:'salad',     label:'Салата' },
+    { key:'dessert',   label:'Десерт' }
+  ];
+  var BADGE_BY_MEAL = { breakfast:'Закуска', lunch:'Обяд', dinner:'Вечеря', salad:'Салата', dessert:'Десерт' };
+
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){
+    return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  };
+
+  var allRecipes = [];      // всички рецепти от data/recipes.json
+  var editingId = null;     // id на рецептата, която редактираме
+  var imageData = null;     // { dataUrl, base64, ext, w, h, bytes }
+
+  /* ---------- транслитерация за slug ---------- */
+  var MAP = {
+    а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',
+    н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'ts',ч:'ch',ш:'sh',
+    щ:'sht',ъ:'a',ь:'y',ю:'yu',я:'ya'
+  };
+  function slugify(s){
+    return String(s||'').toLowerCase().split('').map(function(c){
+      return MAP[c] !== undefined ? MAP[c] : c;
+    }).join('')
+      .replace(/[^a-z0-9]+/g,'-')
+      .replace(/^-+|-+$/g,'')
+      .slice(0,60);
+  }
+  function idFromSlug(s){ return String(s||'').replace(/-/g,''); }
+
+  /* ---------- разчитане на съставки ---------- */
+  var UNITS = ['ч.л.','с.л.','кг','г','мл','л','чаши','чаша','бр.','бр','глави','глава',
+               'скилидки','скилидка','щипка','консерви','консерва','кенчета','кенче',
+               'резенчета','стръкове','стрък','пакет','пакетче','филии'];
+
+  function parseIngredientLine(line){
+    line = line.trim();
+    if(!line) return null;
+    var sec = line.match(/^-{2,}\s*(.+?)\s*-{2,}$/) || line.match(/^—\s*(.+?)\s*—$/);
+    if(sec) return { section: sec[1] };
+
+    var m = line.match(/^(\d+(?:[.,]\d+)?)(?:\s*-\s*\d+(?:[.,]\d+)?)?\s+(.*)$/);
+    if(!m) return { text: line, name: line, amount: null, unit: 'на вкус' };
+
+    var amount = parseFloat(m[1].replace(',', '.'));
+    var rest = m[2].trim();
+    var unit = 'бр.';
+    // по-дългите мерки се пробват първи, за да не вземе „г“ от „глави“
+    var sorted = UNITS.slice().sort(function(a, b){ return b.length - a.length; });
+    for (var i = 0; i < sorted.length; i++){
+      var u = sorted[i];
+      var low = rest.toLowerCase();
+      if (low.indexOf(u.toLowerCase()) !== 0) continue;
+      // мярка без точка трябва да свършва на края на думата
+      var after = rest.charAt(u.length);
+      if (u.slice(-1) !== '.' && after !== '' && after !== ' ') continue;
+      unit = u;
+      rest = rest.slice(u.length).trim();
+      break;
+    }
+    return { text: line, name: rest || line, amount: amount, unit: unit };
+  }
+
+  /* ---------- редове със съставки ---------- */
+  function ingRow(data){
+    data = data || {};
+    var wrap = document.createElement('div');
+    if (data.section !== undefined){
+      wrap.className = 'ing-row is-section';
+      wrap.innerHTML =
+        '<input type="text" class="i-section" placeholder="подзаглавие, напр. за соса" value="'+esc(data.section)+'">' +
+        '<button type="button" class="del" aria-label="Изтрий">×</button>';
+    } else {
+      wrap.className = 'ing-row';
+      wrap.innerHTML =
+        '<input type="text" class="i-amount" placeholder="кол." value="'+esc(data.amount==null?'':data.amount)+'">' +
+        '<input type="text" class="i-unit" placeholder="мярка" value="'+esc(data.unit||'')+'">' +
+        '<input type="text" class="i-name" placeholder="продукт" value="'+esc(data.name||'')+'">' +
+        '<button type="button" class="del" aria-label="Изтрий">×</button>';
+      if (data.text) wrap.dataset.text = data.text;
+    }
+    wrap.querySelector('.del').addEventListener('click', function(){ wrap.remove(); sync(); });
+    wrap.addEventListener('input', sync);
+    return wrap;
+  }
+
+  function readIngredients(){
+    var out = [];
+    $('ing-rows').querySelectorAll('.ing-row').forEach(function(row){
+      if (row.classList.contains('is-section')){
+        var s = row.querySelector('.i-section').value.trim();
+        if (s) out.push({ section: s });
+        return;
+      }
+      var amountRaw = row.querySelector('.i-amount').value.trim().replace(',', '.');
+      var unit = row.querySelector('.i-unit').value.trim();
+      var name = row.querySelector('.i-name').value.trim();
+      if (!name) return;
+      var amount = amountRaw === '' ? null : parseFloat(amountRaw);
+      if (isNaN(amount)) amount = null;
+      if (!unit) unit = amount === null ? 'на вкус' : 'бр.';
+      var text = row.dataset.text || (amount === null ? name : amount + ' ' + unit + ' ' + name);
+      out.push({ text: text, name: name, amount: amount, unit: unit });
+    });
+    return out;
+  }
+
+  function setIngredients(list){
+    var box = $('ing-rows');
+    box.innerHTML = '';
+    (list && list.length ? list : [{}, {}, {}]).forEach(function(i){ box.appendChild(ingRow(i)); });
+  }
+
+  /* ---------- секции „защо си заслужава“ ---------- */
+  function whyRow(data){
+    data = data || {};
+    var wrap = document.createElement('div');
+    wrap.className = 'why-row';
+    wrap.innerHTML =
+      '<div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">' +
+        '<input type="text" class="w-h" placeholder="Заглавие, напр. Защо е полезна" value="'+esc(data.h||'')+'">' +
+        '<button type="button" class="ui small w-del">×</button>' +
+      '</div>' +
+      '<textarea class="w-p" style="min-height:78px" placeholder="Текст…">'+esc(data.p||'')+'</textarea>';
+    wrap.querySelector('.w-del').addEventListener('click', function(){ wrap.remove(); sync(); });
+    wrap.addEventListener('input', sync);
+    return wrap;
+  }
+  function readWhy(){
+    var out = [];
+    $('why-rows').querySelectorAll('.why-row').forEach(function(r){
+      var h = r.querySelector('.w-h').value.trim();
+      var p = r.querySelector('.w-p').value.trim();
+      if (h && p) out.push({ h: h, p: p });
+    });
+    return out;
+  }
+  function setWhy(list){
+    var box = $('why-rows');
+    box.innerHTML = '';
+    (list || []).forEach(function(w){ box.appendChild(whyRow(w)); });
+  }
+
+  /* ---------- обработка на снимка ---------- */
+  function handleFile(file){
+    if (!file || !/^image\//.test(file.type)) { setStatus('err', 'Това не е файл със снимка.'); return; }
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var MAXW = 1400;
+        var scale = Math.min(1, MAXW / img.width);
+        var w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+        var c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        var dataUrl = c.toDataURL('image/jpeg', 0.82);
+        var base64 = dataUrl.split(',')[1];
+        imageData = { dataUrl: dataUrl, base64: base64, ext: 'jpg', w: w, h: h,
+                      bytes: Math.round(base64.length * 3 / 4) };
+        $('img-el').src = dataUrl;
+        $('img-preview').style.display = 'block';
+        $('img-meta').textContent = w + '×' + h + ' пиксела · ' + Math.round(imageData.bytes/1024) + ' KB · ще се запише като images/recipes/<slug>.jpg';
+        $('f-imageUrl').value = '';
+        sync();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ---------- събиране на рецептата ---------- */
+  function currentImagePath(){
+    if (imageData) return 'images/recipes/' + ($('f-slug').value || 'recipe') + '.jpg';
+    return $('f-imageUrl').value.trim();
+  }
+
+  function collect(){
+    var slug = $('f-slug').value.trim() || slugify($('f-title').value);
+    var meal = $('f-meal').value;
+    var steps = $('f-steps').value.split('\n').map(function(s){ return s.trim(); }).filter(Boolean);
+    var cats = [];
+    $('f-categories').querySelectorAll('input:checked').forEach(function(c){ cats.push(c.value); });
+    var img = currentImagePath();
+    var excerpt = $('f-excerpt').value.trim();
+    var time = parseInt($('f-time').value, 10) || 0;
+
+    return {
+      id: editingId || idFromSlug(slug),
+      slug: slug,
+      title: $('f-title').value.trim(),
+      cardTitle: $('f-cardTitle').value.trim() || $('f-title').value.trim(),
+      excerpt: excerpt,
+      lead: $('f-lead').value.trim() || excerpt,
+      meal: meal,
+      categories: cats,
+      badge: $('f-badge').value.trim() || BADGE_BY_MEAL[meal] || '',
+      time: time,
+      timeLabel: window.ptFormatTime ? window.ptFormatTime(time) : (time + ' мин'),
+      servings: parseInt($('f-servings').value, 10) || 4,
+      kcal: parseInt($('f-kcal').value, 10) || 0,
+      protein: $('f-protein').value.trim(),
+      image: img,
+      hero: img,
+      imageAlt: $('f-imageAlt').value.trim() || $('f-title').value.trim(),
+      keywords: $('f-keywords').value.trim(),
+      featured: false,
+      date: new Date().toISOString().slice(0, 10),
+      ingredients: readIngredients(),
+      steps: steps,
+      note: $('f-note').value.trim(),
+      why: readWhy()
+    };
+  }
+
+  function validate(r){
+    var errs = [];
+    if (!r.title) errs.push('заглавие');
+    if (!r.slug) errs.push('адрес (slug)');
+    if (!r.excerpt) errs.push('кратко описание');
+    if (!r.categories.length) errs.push('поне едно меню');
+    if (!r.time) errs.push('време за приготвяне');
+    if (!r.image) errs.push('снимка');
+    if (!r.ingredients.length) errs.push('съставки');
+    if (!r.steps.length) errs.push('стъпки за приготвяне');
+    return errs;
+  }
+
+  /* ---------- живо обновяване ---------- */
+  function sync(){
+    var titleSlug = $('f-slug').value.trim() || slugify($('f-title').value);
+    if (!$('f-slug').value.trim() && titleSlug) $('f-slug').placeholder = titleSlug;
+    $('slug-file').textContent = 'recipe-' + (titleSlug || '…') + '.html';
+
+    var r = collect();
+    if (imageData) r.image = r.hero = imageData.dataUrl;
+    $('preview').innerHTML = window.ptCardHtml ? window.ptCardHtml(r) : '';
+    $('json-out').value = JSON.stringify(collect(), null, 2);
+  }
+
+  function setStatus(kind, html){
+    var el = $('status');
+    el.className = 'status ' + kind;
+    el.innerHTML = html;
+  }
+
+  /* ---------- зареждане на съществуващи рецепти ---------- */
+  function loadRecipes(){
+    fetch('data/recipes.json', { cache: 'no-store' })
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(list){
+        allRecipes = list;
+        renderList();
+      })
+      .catch(function(){
+        // при отваряне през file:// fetch не работи — ползваме вградените данни
+        if (window.RECIPES && window.RECIPES.length){
+          allRecipes = window.RECIPES;
+          renderList();
+        } else {
+          $('recipe-list').innerHTML =
+            '<div class="help">Не успях да заредя data/recipes.json. ' +
+            'Отвори тази страница през уеб адрес (не като файл), за да редактираш съществуващи рецепти. ' +
+            'Добавянето на нова работи и така.</div>';
+        }
+      });
+  }
+
+  function renderList(){
+    var box = $('recipe-list');
+    if (!allRecipes.length){ box.innerHTML = '<div class="help">Още няма рецепти.</div>'; return; }
+    box.innerHTML = '';
+    allRecipes.forEach(function(r){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span>' + esc(r.cardTitle || r.title) + '</span><span class="meta">' + esc(r.badge || '') + '</span>';
+      b.addEventListener('click', function(){ loadIntoForm(r); });
+      box.appendChild(b);
+    });
+  }
+
+  function loadIntoForm(r){
+    editingId = r.id;
+    imageData = null;
+    $('f-slug').dataset.touched = '1';
+    $('f-title').value = r.title || '';
+    $('f-slug').value = r.slug || '';
+    $('f-cardTitle').value = r.cardTitle || '';
+    $('f-excerpt').value = r.excerpt || '';
+    $('f-lead').value = r.lead || '';
+    $('f-imageUrl').value = r.image || '';
+    $('f-imageAlt').value = r.imageAlt || '';
+    $('f-meal').value = r.meal || 'dinner';
+    $('f-badge').value = r.badge || '';
+    $('f-time').value = r.time || '';
+    $('f-servings').value = r.servings || 4;
+    $('f-kcal').value = r.kcal || '';
+    $('f-protein').value = r.protein || '';
+    $('f-keywords').value = r.keywords || '';
+    $('f-steps').value = (r.steps || []).join('\n');
+    $('f-note').value = r.note || '';
+    $('f-categories').querySelectorAll('input').forEach(function(c){
+      c.checked = (r.categories || []).indexOf(c.value) > -1;
+    });
+    setIngredients(r.ingredients);
+    setWhy(r.why);
+    $('img-preview').style.display = 'none';
+    setStatus('info', 'Редактираш „' + esc(r.title) + '“. Запазването ще замени старата версия.');
+    sync();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function resetForm(){
+    editingId = null;
+    imageData = null;
+    ['f-title','f-slug','f-cardTitle','f-excerpt','f-lead','f-imageUrl','f-imageAlt',
+     'f-badge','f-time','f-kcal','f-protein','f-keywords','f-steps','f-note','f-ingPaste']
+      .forEach(function(id){ $(id).value = ''; });
+    $('f-servings').value = 4;
+    $('f-categories').querySelectorAll('input').forEach(function(c){ c.checked = false; });
+    setIngredients(null);
+    setWhy([
+      { h:'Защо е полезна', p:'' },
+      { h:'Кога е най-подходящо да се яде', p:'' },
+      { h:'Какво дава на тялото', p:'' }
+    ]);
+    $('img-preview').style.display = 'none';
+    $('status').className = 'status';
+    sync();
+  }
+
+  /* ---------- обединяване и запис ---------- */
+  function mergedList(){
+    var r = collect();
+    var list = allRecipes.slice();
+    var i = list.findIndex(function(x){ return x.id === r.id || x.slug === r.slug; });
+    if (i > -1) list[i] = r; else list.unshift(r);
+    list.sort(function(a, b){ return String(b.date).localeCompare(String(a.date)); });
+    return list;
+  }
+
+  function download(name, text, type){
+    var blob = new Blob([text], { type: type || 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+
+  /* ---------- GitHub ---------- */
+  var GH_KEY = 'pt_gh_settings';
+  function ghSettings(){
+    try { return JSON.parse(localStorage.getItem(GH_KEY) || '{}'); } catch(e){ return {}; }
+  }
+  function loadGh(){
+    var s = ghSettings();
+    $('gh-owner').value = s.owner || '';
+    $('gh-repo').value = s.repo || '';
+    $('gh-branch').value = s.branch || 'main';
+    $('gh-token').value = s.token || '';
+  }
+  function saveGh(){
+    localStorage.setItem(GH_KEY, JSON.stringify({
+      owner: $('gh-owner').value.trim(),
+      repo: $('gh-repo').value.trim(),
+      branch: $('gh-branch').value.trim() || 'main',
+      token: $('gh-token').value.trim()
+    }));
+    setStatus('ok', 'Настройките са запазени в този браузър.');
+  }
+
+  function ghApi(path, opts){
+    var s = ghSettings();
+    return fetch('https://api.github.com/repos/' + s.owner + '/' + s.repo + '/' + path,
+      Object.assign({ headers: {
+        'Authorization': 'Bearer ' + s.token,
+        'Accept': 'application/vnd.github+json'
+      }}, opts || {}));
+  }
+
+  function utf8ToBase64(str){
+    var bytes = new TextEncoder().encode(str);
+    var bin = '';
+    bytes.forEach(function(b){ bin += String.fromCharCode(b); });
+    return btoa(bin);
+  }
+
+  function ghPut(path, base64, message){
+    var s = ghSettings();
+    return ghApi('contents/' + path + '?ref=' + encodeURIComponent(s.branch))
+      .then(function(res){ return res.ok ? res.json() : null; })
+      .then(function(existing){
+        return ghApi('contents/' + path, {
+          method: 'PUT',
+          body: JSON.stringify({
+            message: message,
+            content: base64,
+            branch: s.branch,
+            sha: existing ? existing.sha : undefined
+          })
+        });
+      })
+      .then(function(res){
+        if (!res.ok) return res.json().then(function(j){
+          throw new Error(path + ': ' + (j.message || res.status));
+        });
+        return res.json();
+      });
+  }
+
+  function publishToGithub(){
+    var s = ghSettings();
+    if (!s.owner || !s.repo || !s.token){
+      setStatus('err', 'Първо попълни настройките за GitHub долу (потребител, хранилище и токен).');
+      $('gh-settings').open = true;
+      return;
+    }
+    var r = collect();
+    var errs = validate(r);
+    if (errs.length){ setStatus('err', 'Липсва: ' + errs.join(', ') + '.'); return; }
+
+    var btn = $('btn-github');
+    btn.disabled = true;
+    setStatus('info', 'Изпращам към GitHub…');
+
+    var chain = Promise.resolve();
+    if (imageData){
+      chain = chain.then(function(){
+        setStatus('info', 'Качвам снимката…');
+        return ghPut('images/recipes/' + r.slug + '.jpg', imageData.base64,
+                     'Снимка за рецепта: ' + r.title);
+      });
+    }
+    chain
+      .then(function(){
+        setStatus('info', 'Записвам рецептата…');
+        var json = JSON.stringify(mergedList(), null, 2) + '\n';
+        return ghPut('data/recipes.json', utf8ToBase64(json),
+                     (editingId ? 'Обнови рецепта: ' : 'Нова рецепта: ') + r.title);
+      })
+      .then(function(){
+        allRecipes = mergedList();
+        renderList();
+        editingId = r.id;
+        setStatus('ok',
+          '<strong>Готово!</strong> Рецептата е записана в GitHub. ' +
+          'Ако е включен автоматичният билд (GitHub Actions), страницата ' +
+          '<code>recipe-' + esc(r.slug) + '.html</code> и всички менюта ще се обновят до минута-две.');
+      })
+      .catch(function(e){
+        setStatus('err', 'Грешка: ' + esc(e.message) +
+          '<br>Провери токена, името на хранилището и клона.');
+      })
+      .then(function(){ btn.disabled = false; });
+  }
+
+  /* ---------- инициализация ---------- */
+  function init(){
+    $('f-categories').innerHTML = CATEGORIES.map(function(c){
+      return '<label><input type="checkbox" value="' + c.slug + '"> ' + esc(c.label) + '</label>';
+    }).join('');
+    $('f-meal').innerHTML = MEALS.map(function(m){
+      return '<option value="' + m.key + '">' + esc(m.label) + '</option>';
+    }).join('');
+    $('f-meal').value = 'dinner';
+
+    resetForm();
+    loadGh();
+    loadRecipes();
+
+    // автоматичен slug от заглавието
+    $('f-title').addEventListener('input', function(){
+      if (!$('f-slug').dataset.touched) $('f-slug').value = slugify($('f-title').value);
+      sync();
+    });
+    $('f-slug').addEventListener('input', function(){ $('f-slug').dataset.touched = '1'; sync(); });
+    $('f-meal').addEventListener('change', function(){
+      if (!$('f-badge').value.trim()) $('f-badge').value = BADGE_BY_MEAL[$('f-meal').value] || '';
+      sync();
+    });
+
+    document.querySelectorAll('input, textarea, select').forEach(function(el){
+      if (el.id && el.id.indexOf('gh-') === 0) return;
+      el.addEventListener('input', sync);
+    });
+
+    // съставки
+    $('btn-add-ing').addEventListener('click', function(){ $('ing-rows').appendChild(ingRow({})); });
+    $('btn-add-sec').addEventListener('click', function(){ $('ing-rows').appendChild(ingRow({ section:'' })); });
+    $('btn-parse-ing').addEventListener('click', function(){
+      var lines = $('f-ingPaste').value.split('\n').map(parseIngredientLine).filter(Boolean);
+      if (!lines.length){ setStatus('err', 'Полето за бързо въвеждане е празно.'); return; }
+      setIngredients(lines);
+      sync();
+      setStatus('ok', 'Разчетени ' + lines.length + ' реда. Провери количествата и мерките долу.');
+    });
+
+    $('btn-add-why').addEventListener('click', function(){ $('why-rows').appendChild(whyRow({})); });
+
+    // снимка
+    $('drop').addEventListener('click', function(){ $('f-file').click(); });
+    $('f-file').addEventListener('change', function(e){ handleFile(e.target.files[0]); });
+    ['dragenter','dragover'].forEach(function(ev){
+      $('drop').addEventListener(ev, function(e){ e.preventDefault(); $('drop').classList.add('over'); });
+    });
+    ['dragleave','drop'].forEach(function(ev){
+      $('drop').addEventListener(ev, function(e){ e.preventDefault(); $('drop').classList.remove('over'); });
+    });
+    $('drop').addEventListener('drop', function(e){
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+
+    // запазване
+    $('btn-download').addEventListener('click', function(){
+      var r = collect();
+      var errs = validate(r);
+      if (errs.length){ setStatus('err', 'Липсва: ' + errs.join(', ') + '.'); return; }
+      download('recipes.json', JSON.stringify(mergedList(), null, 2) + '\n');
+      if (imageData){
+        var a = document.createElement('a');
+        a.href = imageData.dataUrl;
+        a.download = r.slug + '.jpg';
+        a.click();
+      }
+      setStatus('ok',
+        'Свалени са <code>recipes.json</code>' + (imageData ? ' и снимката' : '') + '.<br>' +
+        'Сложи <code>recipes.json</code> в папка <code>data/</code>' +
+        (imageData ? ', а снимката в <code>images/recipes/</code>' : '') +
+        ' и пусни <code>node tools/build.mjs</code>.');
+    });
+
+    $('btn-copy').addEventListener('click', function(){
+      navigator.clipboard.writeText(JSON.stringify(collect(), null, 2)).then(function(){
+        setStatus('ok', 'Рецептата е копирана. Може да я пратиш на Claude или да я добавиш в data/recipes.json.');
+      });
+    });
+
+    $('btn-new').addEventListener('click', function(){
+      resetForm();
+      $('f-slug').dataset.touched = '';
+      setStatus('info', 'Нова празна рецепта.');
+    });
+
+    $('btn-github').addEventListener('click', publishToGithub);
+    $('btn-gh-save').addEventListener('click', saveGh);
+    $('btn-gh-forget').addEventListener('click', function(){
+      localStorage.removeItem(GH_KEY);
+      loadGh();
+      setStatus('ok', 'Токенът е изтрит от този браузър.');
+    });
+
+    sync();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

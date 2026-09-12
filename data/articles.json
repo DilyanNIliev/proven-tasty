@@ -1,0 +1,38 @@
+[
+  {
+    "slug": "banana",
+    "href": "facts-banana.html",
+    "image": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=700&q=80",
+    "title": "10 факта за банана",
+    "excerpt": "Какви витамини и минерали съдържа, и защо 2 банана стигат за 90 минути интензивна тренировка.",
+    "readTime": "5 мин четене",
+    "published": true
+  },
+  {
+    "slug": "carrot",
+    "href": "facts-carrot.html",
+    "image": "https://images.unsplash.com/photo-1589927986089-35812388d1f4?w=700&q=80",
+    "title": "10 факта за морковите",
+    "excerpt": "Какви витамини и минерали съдържа, и защо 3 моркова стигат за 3 километра бягане.",
+    "readTime": "5 мин четене",
+    "published": false
+  },
+  {
+    "slug": "almonds",
+    "href": "facts-almonds.html",
+    "image": "https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=700&q=80",
+    "title": "10 факта за бадемите",
+    "excerpt": "Какви витамини и минерали съдържа този дребен, но хранително плътен орех.",
+    "readTime": "5 мин четене",
+    "published": true
+  },
+  {
+    "slug": "walnuts",
+    "href": "facts-walnuts.html",
+    "image": "https://images.unsplash.com/photo-1524593656068-fbac72624bb0?w=700&q=80",
+    "title": "10 факта за орехите",
+    "excerpt": "Богат на омега-3 орех, свързван и с подкрепа на мозъчната функция.",
+    "readTime": "5 мин четене",
+    "published": true
+  }
+]

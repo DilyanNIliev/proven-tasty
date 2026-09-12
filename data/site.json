@@ -1,0 +1,41 @@
+{
+  "name": "Доказано Вкусно",
+  "tagline": "Рецепти, приготвени с грижа",
+  "description": "Прости, тествани рецепти за чисто хранене — с точни съставки, ясни стъпки и автоматичен пазарски списък.",
+  "url": "https://dokazanovkusno.bg",
+  "lang": "bg",
+  "author": "Доказано Вкусно",
+  "adsenseClient": "",
+  "gaMeasurementId": "",
+  "nav": [
+    { "href": "salads.html", "label": "Салати" },
+    { "href": "mains.html", "label": "Основни" },
+    { "href": "breakfast.html", "label": "Закуски" },
+    { "href": "desserts.html", "label": "Десерти" },
+    { "href": "athletes.html", "label": "За спортисти" },
+    { "href": "healthy.html", "label": "Полезно" }
+  ],
+  "categories": [
+    { "slug": "salads", "label": "Салати", "key": "salads" },
+    { "slug": "mains", "label": "Основни", "key": "mains" },
+    { "slug": "breakfast", "label": "Закуски", "key": "breakfast" },
+    { "slug": "desserts", "label": "Десерти", "key": "desserts" },
+    { "slug": "athletes", "label": "За спортисти", "key": "athletes" }
+  ],
+  "meals": [
+    { "key": "all", "label": "Всички" },
+    { "key": "breakfast", "label": "Закуска" },
+    { "key": "lunch", "label": "Обяд" },
+    { "key": "dinner", "label": "Вечеря" },
+    { "key": "salad", "label": "Салата" },
+    { "key": "dessert", "label": "Десерт" }
+  ],
+  "footerLinks": [
+    { "href": "index.html", "label": "Начало" },
+    { "href": "recipes.html", "label": "Всички рецепти" },
+    { "href": "about.html", "label": "За нас" },
+    { "href": "contact.html", "label": "Контакти" },
+    { "href": "shopping-list.html", "label": "Пазарски списък" },
+    { "href": "index.html#subscribe", "label": "Абонамент" }
+  ]
+}
