@@ -75,8 +75,8 @@
   <p>Прости, високопротеинови и засищащи ястия — филтрирай по хранене и намери следващото си любимо блюдо.</p>
 
   <div class="filters" role="group" aria-label="Филтър по вид хранене">
-    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">11</span></button>
-    <button type="button" data-filter="breakfast" aria-pressed="false">Закуска <span class="count">3</span></button>
+    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">12</span></button>
+    <button type="button" data-filter="breakfast" aria-pressed="false">Закуска <span class="count">4</span></button>
     <button type="button" data-filter="lunch" aria-pressed="false">Обяд <span class="count">2</span></button>
     <button type="button" data-filter="dinner" aria-pressed="false">Вечеря <span class="count">5</span></button>
     <button type="button" data-filter="dessert" aria-pressed="false">Десерт <span class="count">1</span></button>
@@ -85,6 +85,23 @@
 
 <section class="section" style="padding-top:20px;">
   <div class="grid" id="recipe-grid">
+    <a class="card" data-cat="breakfast" href="recipe-buhti.html">
+      <div class="card-img">
+        <span class="card-tag">Закуска</span>
+        <button type="button" class="cart-toggle" data-recipe-id="buhti" onclick="toggleCart('buhti', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Бухти с кисело мляко, поднесени с лютеница" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Бухти с кисело мляко</h3>
+        <p>Пухкави бухти само от яйца, кисело мляко и брашно — без захар в сместа, за да станат и солени, и сладки.</p>
+        <div class="card-meta">
+          <span>⏱ 25 мин</span>
+          <span>🔥 800 ккал</span>
+        </div>
+      </div>
+    </a>
     <a class="card" data-cat="breakfast" href="recipe-overnight-oats.html">
       <div class="card-img">
         <span class="card-tag">Закуска</span>

@@ -9,7 +9,6 @@
 <meta property="og:site_name" content="Доказано Вкусно">
 <meta property="og:title" content="Доказано Вкусно">
 <meta property="og:description" content="Прости, тествани рецепти за чисто хранене — с точни съставки, ясни стъпки и автоматичен пазарски списък.">
-<meta property="og:image" content="https://images.unsplash.com/photo-1641494587136-eec74f1944ae?w=700&amp;q=80">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#2F4A3B">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='19' font-size='19'>🌿</text></svg>">
@@ -108,6 +107,23 @@
   </div>
 
   <div class="grid">
+    <a class="card" data-cat="breakfast" href="recipe-buhti.html">
+      <div class="card-img">
+        <span class="card-tag">Закуска</span>
+        <button type="button" class="cart-toggle" data-recipe-id="buhti" onclick="toggleCart('buhti', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Бухти с кисело мляко, поднесени с лютеница" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Бухти с кисело мляко</h3>
+        <p>Пухкави бухти само от яйца, кисело мляко и брашно — без захар в сместа, за да станат и солени, и сладки.</p>
+        <div class="card-meta">
+          <span>⏱ 25 мин</span>
+          <span>🔥 800 ккал</span>
+        </div>
+      </div>
+    </a>
     <a class="card" data-cat="breakfast" href="recipe-overnight-oats.html">
       <div class="card-img">
         <span class="card-tag">Закуска</span>
@@ -190,23 +206,6 @@
         <div class="card-meta">
           <span>⏱ 1 ч 10 мин</span>
           <span>🔥 550 ккал</span>
-        </div>
-      </div>
-    </a>
-    <a class="card" data-cat="dinner" href="recipe-chili.html">
-      <div class="card-img">
-        <span class="card-tag">Основни</span>
-        <button type="button" class="cart-toggle" data-recipe-id="kayma" onclick="toggleCart('kayma', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
-        <img src="https://images.unsplash.com/photo-1673990349292-ed2dfa7988c9?w=700&amp;q=80" alt="Чили кон карне с питка и разтопен кашкавал" loading="lazy" decoding="async" width="700" height="525">
-      </div>
-      <div class="card-body">
-        <h3 class="display">Чили кон карне с питка и кашкавал</h3>
-        <p>Ароматно чили с домати, боб и подправки, поднесено в топла питка с разтопен кашкавал.</p>
-        <div class="card-meta">
-          <span>⏱ 45 мин</span>
-          <span>🔥 560 ккал</span>
         </div>
       </div>
     </a>

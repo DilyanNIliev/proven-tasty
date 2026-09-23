@@ -179,6 +179,8 @@
   /* ---------- карти ---------- */
   function cardHtml(r) {
     var href = 'recipe-' + r.slug + '.html';
+    var img = r.image || 'images/placeholder.svg';
+    var imgCls = r.image ? '' : ' class="is-placeholder"';
     return '<a class="card" data-cat="' + esc(r.meal) + '" href="' + esc(href) + '">' +
       '<div class="card-img">' +
         '<span class="card-tag">' + esc(r.badge) + '</span>' +
@@ -186,7 +188,7 @@
           'onclick="toggleCart(\'' + esc(r.id) + '\', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>' +
         '</button>' +
-        '<img src="' + esc(r.image) + '" alt="' + esc(r.imageAlt || r.title) + '" loading="lazy" decoding="async">' +
+        '<img src="' + esc(img) + '"' + imgCls + ' alt="' + esc(r.imageAlt || r.title) + '" loading="lazy" decoding="async">' +
       '</div>' +
       '<div class="card-body">' +
         '<h3 class="display">' + esc(r.cardTitle || r.title) + '</h3>' +

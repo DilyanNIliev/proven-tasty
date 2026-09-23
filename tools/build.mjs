@@ -35,6 +35,13 @@ const esc = (s) =>
 
 const recipeHref = (r) => `recipe-${r.slug}.html`;
 
+/** Рецепта без снимка получава заместител, вместо счупено изображение. */
+const PLACEHOLDER = 'images/placeholder.svg';
+const cardImage = (r) => r.image || PLACEHOLDER;
+const heroImage = (r) => r.hero || r.image || PLACEHOLDER;
+/** Заместителят се показва цял, вместо да се отреже при различните пропорции. */
+const imgClass = (src) => (src === PLACEHOLDER ? ' class="is-placeholder"' : '');
+
 function formatTime(min) {
   if (!min) return '';
   if (min < 60) return `${min} мин`;
@@ -208,7 +215,7 @@ function recipeCard(r) {
         <button type="button" class="cart-toggle" data-recipe-id="${esc(r.id)}" onclick="toggleCart('${esc(r.id)}', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
         </button>
-        <img src="${esc(r.image)}" alt="${esc(r.imageAlt || r.title)}" loading="lazy" decoding="async" width="700" height="525">
+        <img src="${esc(cardImage(r))}"${imgClass(cardImage(r))} alt="${esc(r.imageAlt || r.title)}" loading="lazy" decoding="async" width="700" height="525">
       </div>
       <div class="card-body">
         <h3 class="display">${esc(r.cardTitle || r.title)}</h3>
@@ -344,7 +351,7 @@ function recipePage(r) {
 
 <div class="recipe-hero">
   <div class="recipe-hero-img">
-    <img src="${esc(r.hero || r.image)}" alt="${esc(r.imageAlt || r.title)}" width="1400" height="600" fetchpriority="high" decoding="async">
+    <img src="${esc(heroImage(r))}"${imgClass(heroImage(r))} alt="${esc(r.imageAlt || r.title)}" width="1400" height="600" fetchpriority="high" decoding="async">
   </div>
 
   <div class="recipe-actions">
