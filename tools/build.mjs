@@ -11,6 +11,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -34,6 +35,17 @@ const esc = (s) =>
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
 const recipeHref = (r) => `recipe-${r.slug}.html`;
+
+/**
+ * Адрес на CSS/JS файл с отпечатък от съдържанието му (напр. site.js?v=3f9a1c2e).
+ * Браузърите и GitHub Pages кешират тези файлове, затова без отпечатъка телефонът
+ * може да показва старата търсачка или стария списък с рецепти дори след ново
+ * публикуване. Щом файлът се промени, адресът се сменя и браузърът го тегли наново.
+ */
+function asset(p) {
+  const hash = crypto.createHash('sha1').update(fs.readFileSync(path.join(ROOT, p))).digest('hex').slice(0, 8);
+  return `${p}?v=${hash}`;
+}
 
 /** Рецепта без снимка получава заместител, вместо счупено изображение. */
 const PLACEHOLDER = 'images/placeholder.svg';
@@ -89,7 +101,7 @@ ${ogImage ? `<meta property="og:image" content="${esc(ogImage)}">` : ''}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="${asset('assets/site.css')}">
 ${jsonld.map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n')}
 ${site.gaMeasurementId ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${site.gaMeasurementId}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${site.gaMeasurementId}');</script>` : ''}
@@ -180,8 +192,8 @@ function adSlot(slotId) {
 }
 
 function scripts() {
-  return `<script src="assets/recipes-data.js"></script>
-<script src="assets/site.js"></script>`;
+  return `<script src="${asset('assets/recipes-data.js')}"></script>
+<script src="${asset('assets/site.js')}"></script>`;
 }
 
 /** Обвива съдържанието в пълна HTML страница. */
