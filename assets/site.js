@@ -206,11 +206,23 @@
     var count = document.getElementById('search-count');
     if (!input || !results) return;
 
+    // Българските думи сменят окончанията си („закуска“ / „закуски“,
+    // „пилешко“ / „пилешка“), затова търсим по корена на думата, а не буква
+    // по буква. Всяка дума от заявката трябва да се среща в рецептата.
+    // Махаме само последната буква: „основни“ → „основн“ хваща „основни“,
+    // но не и „основата“, която би хванала, ако режем повече.
+    function stem(word) {
+      return word.length >= 4 ? word.slice(0, -1) : word;
+    }
+
     function run() {
       var raw = input.value.trim();
       var q = raw.toLowerCase();
+      var stems = q.split(/[\s,.;]+/).filter(Boolean).map(stem);
       var matches = q === '' ? RECIPES : RECIPES.filter(function (r) {
-        return (r.title + ' ' + r.excerpt + ' ' + (r.keywords || '') + ' ' + r.badge).toLowerCase().indexOf(q) > -1;
+        var text = r.search ||
+          (r.title + ' ' + r.excerpt + ' ' + (r.keywords || '') + ' ' + r.badge).toLowerCase();
+        return stems.every(function (s) { return text.indexOf(s) > -1; });
       });
       if (count) {
         count.textContent = q === '' ? '' :
