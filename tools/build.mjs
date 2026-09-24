@@ -478,12 +478,24 @@ const PAGES = [
    ГЕНЕРИРАНЕ
    ========================================================================== */
 
+/** Целият текст, по който търсачката в сайта намира рецептата. */
+function searchText(r) {
+  const catLabel = (slug) => (site.categories.find((c) => c.slug === slug) || {}).label;
+  const mealLabel = (site.meals.find((m) => m.key === r.meal) || {}).label;
+  return [
+    r.title, r.cardTitle, r.excerpt, r.keywords, r.badge, mealLabel,
+    ...(r.categories || []).map(catLabel),
+    ...(r.ingredients || []).map((i) => i.name || i.text),
+  ].filter(Boolean).join(' ').toLowerCase();
+}
+
 function buildDataFile() {
   const payload = recipes.map((r) => ({
     id: r.id, slug: r.slug, title: r.title, cardTitle: r.cardTitle, excerpt: r.excerpt,
     meal: r.meal, categories: r.categories, badge: r.badge, time: r.time, kcal: r.kcal,
     image: r.image, imageAlt: r.imageAlt, keywords: r.keywords,
     ingredients: r.ingredients,
+    search: searchText(r),
   }));
   write('assets/recipes-data.js',
     '/* Генериран файл — не го променяй на ръка. Източник: data/recipes.json */\n' +
