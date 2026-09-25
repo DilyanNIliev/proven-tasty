@@ -75,17 +75,34 @@
   <p>Прости, високопротеинови и засищащи ястия — филтрирай по хранене и намери следващото си любимо блюдо.</p>
 
   <div class="filters" role="group" aria-label="Филтър по вид хранене">
-    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">33</span></button>
+    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">34</span></button>
     <button type="button" data-filter="breakfast" aria-pressed="false">Закуска <span class="count">5</span></button>
     <button type="button" data-filter="lunch" aria-pressed="false">Обяд <span class="count">4</span></button>
     <button type="button" data-filter="dinner" aria-pressed="false">Вечеря <span class="count">10</span></button>
     <button type="button" data-filter="salad" aria-pressed="false">Салата <span class="count">1</span></button>
-    <button type="button" data-filter="dessert" aria-pressed="false">Десерт <span class="count">13</span></button>
+    <button type="button" data-filter="dessert" aria-pressed="false">Десерт <span class="count">14</span></button>
   </div>
 </div>
 
 <section class="section" style="padding-top:20px;">
   <div class="grid" id="recipe-grid">
+    <a class="card" data-cat="dessert" href="recipe-shokoladov-desert-biskviti-blender.html">
+      <div class="card-img">
+        <span class="card-tag">Десерт</span>
+        <button type="button" class="cart-toggle" data-recipe-id="biskvitendesertblender" onclick="toggleCart('biskvitendesertblender', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Шоколадов десерт от бисквити, нарязан на квадрати" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Шоколадов десерт от бисквити</h3>
+        <p>Бисквити, два вида шоколад, масло и горещо мляко, пасирани в блендер — стяга се в хладилника до гъст, кремообразен десерт като пудинг.</p>
+        <div class="card-meta">
+          <span>⏱ 4 ч 15 мин</span>
+          <span>🔥 255 ккал</span>
+        </div>
+      </div>
+    </a>
     <a class="card" data-cat="breakfast" href="recipe-sandvich-riba-ton-yaytsa.html">
       <div class="card-img">
         <span class="card-tag">Закуска</span>
@@ -680,7 +697,7 @@
     © 2026 Доказано Вкусно — Приготвено с грижа за твоето хранене.
   </div>
 </footer>
-<script src="assets/recipes-data.js?v=8732a14e"></script>
+<script src="assets/recipes-data.js?v=a2961076"></script>
 <script src="assets/site.js?v=9c76a0e0"></script>
 </body>
 </html>
