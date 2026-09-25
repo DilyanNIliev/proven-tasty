@@ -75,17 +75,119 @@
   <p>Прости, високопротеинови и засищащи ястия — филтрирай по хранене и намери следващото си любимо блюдо.</p>
 
   <div class="filters" role="group" aria-label="Филтър по вид хранене">
-    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">30</span></button>
-    <button type="button" data-filter="breakfast" aria-pressed="false">Закуска <span class="count">4</span></button>
-    <button type="button" data-filter="lunch" aria-pressed="false">Обяд <span class="count">4</span></button>
-    <button type="button" data-filter="dinner" aria-pressed="false">Вечеря <span class="count">8</span></button>
+    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">36</span></button>
+    <button type="button" data-filter="breakfast" aria-pressed="false">Закуска <span class="count">6</span></button>
+    <button type="button" data-filter="lunch" aria-pressed="false">Обяд <span class="count">5</span></button>
+    <button type="button" data-filter="dinner" aria-pressed="false">Вечеря <span class="count">10</span></button>
     <button type="button" data-filter="salad" aria-pressed="false">Салата <span class="count">1</span></button>
-    <button type="button" data-filter="dessert" aria-pressed="false">Десерт <span class="count">13</span></button>
+    <button type="button" data-filter="dessert" aria-pressed="false">Десерт <span class="count">14</span></button>
   </div>
 </div>
 
 <section class="section" style="padding-top:20px;">
   <div class="grid" id="recipe-grid">
+    <a class="card" data-cat="lunch" href="recipe-kupa-kaima-sladak-kartof-avokado.html">
+      <div class="card-img">
+        <span class="card-tag">Основно</span>
+        <button type="button" class="cart-toggle" data-recipe-id="kupakaima" onclick="toggleCart('kupakaima', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Купа с кайма, печен сладък картоф, настърган кашкавал и авокадо" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Купа с кайма и сладък картоф</h3>
+        <p>Подправена кайма и хрупкави кубчета сладък картоф, поднесени с настърган кашкавал и авокадо — 34 г протеин в една купа.</p>
+        <div class="card-meta">
+          <span>⏱ 40 мин</span>
+          <span>🔥 562 ккал</span>
+        </div>
+      </div>
+    </a>
+    <a class="card" data-cat="breakfast" href="recipe-hapki-spanak-maslini-sirene.html">
+      <div class="card-img">
+        <span class="card-tag">Закуска</span>
+        <button type="button" class="cart-toggle" data-recipe-id="hapkispanak" onclick="toggleCart('hapkispanak', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Солени хапки със спанак, маслини и сирене върху хартия за печене" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Хапки със спанак, маслини и сирене</h3>
+        <p>Меки солени хапки от яйца, извара и бадемово брашно със спанак, маслини, моцарела и бяло сирене — готови за 50 минути, топли или студени.</p>
+        <div class="card-meta">
+          <span>⏱ 50 мин</span>
+          <span>🔥 286 ккал</span>
+        </div>
+      </div>
+    </a>
+    <a class="card" data-cat="dessert" href="recipe-shokoladov-desert-biskviti-blender.html">
+      <div class="card-img">
+        <span class="card-tag">Десерт</span>
+        <button type="button" class="cart-toggle" data-recipe-id="biskvitendesertblender" onclick="toggleCart('biskvitendesertblender', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Шоколадов десерт от бисквити, нарязан на квадрати" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Шоколадов десерт от бисквити</h3>
+        <p>Бисквити, два вида шоколад, масло и горещо мляко, пасирани в блендер — стяга се в хладилника до гъст, кремообразен десерт като пудинг.</p>
+        <div class="card-meta">
+          <span>⏱ 4 ч 15 мин</span>
+          <span>🔥 255 ккал</span>
+        </div>
+      </div>
+    </a>
+    <a class="card" data-cat="breakfast" href="recipe-sandvich-riba-ton-yaytsa.html">
+      <div class="card-img">
+        <span class="card-tag">Закуска</span>
+        <button type="button" class="cart-toggle" data-recipe-id="sandvichton" onclick="toggleCart('sandvichton', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Сандвич с пълнозърнест хляб и плънка от риба тон, яйца, краставица и магданоз" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Сандвич с риба тон и яйца</h3>
+        <p>Риба тон, варени яйца, краставица, червен лук и магданоз с лъжица лабне върху пълнозърнест хляб — 33 г протеин за 20 минути.</p>
+        <div class="card-meta">
+          <span>⏱ 20 мин</span>
+          <span>🔥 393 ккал</span>
+        </div>
+      </div>
+    </a>
+    <a class="card" data-cat="dinner" href="recipe-tortila-tikvichka-morkovi-pile.html">
+      <div class="card-img">
+        <span class="card-tag">Основно</span>
+        <button type="button" class="cart-toggle" data-recipe-id="tortilatikvichka" onclick="toggleCart('tortilatikvichka', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Зеленчукова тортила от тиквичка и моркови, пълнена с пиле, авокадо и рукола" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Тортила от тиквичка с пиле и авокадо</h3>
+        <p>Тортила без брашно от тиквичка, моркови, яйца и кашкавал, завита с пилешко филе или кайма, авокадо, рукола и крема сирене.</p>
+        <div class="card-meta">
+          <span>⏱ 55 мин</span>
+          <span>🔥 394 ккал</span>
+        </div>
+      </div>
+    </a>
+    <a class="card" data-cat="dinner" href="recipe-pile-med-chesan-sladak-kartof.html">
+      <div class="card-img">
+        <span class="card-tag">Основно</span>
+        <button type="button" class="cart-toggle" data-recipe-id="pilemedchesan" onclick="toggleCart('pilemedchesan', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Пилешко филе в меден сос със сусам, сладък картоф и броколи" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Пиле с мед и чесън и сладък картоф</h3>
+        <p>Хрупкаво пилешко филе, глазирано в сос от мед, соев сос и чесън, със сусам, печен сладък картоф и броколи — 54 г протеин на порция.</p>
+        <div class="card-meta">
+          <span>⏱ 50 мин</span>
+          <span>🔥 543 ккал</span>
+        </div>
+      </div>
+    </a>
     <a class="card" data-cat="dinner" href="recipe-kiufteta-kartofi-morkovi-brokoli.html">
       <div class="card-img">
         <span class="card-tag">Основно</span>
@@ -629,7 +731,7 @@
     © 2026 Доказано Вкусно — Приготвено с грижа за твоето хранене.
   </div>
 </footer>
-<script src="assets/recipes-data.js?v=941a7bef"></script>
+<script src="assets/recipes-data.js?v=2a96f182"></script>
 <script src="assets/site.js?v=9c76a0e0"></script>
 </body>
 </html>
