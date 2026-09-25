@@ -24,9 +24,12 @@ const write = (p, s) => {
 };
 
 const site = readJSON('data/site.json');
+// Най-новите първи; при еднаква дата по-късно добавената рецепта се води по-нова.
 const recipes = readJSON('data/recipes.json')
-  .filter((r) => r.published !== false)
-  .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  .map((r, i) => ({ r, i }))
+  .filter(({ r }) => r.published !== false)
+  .sort((a, b) => String(b.r.date).localeCompare(String(a.r.date)) || b.i - a.i)
+  .map(({ r }) => r);
 const articles = readJSON('data/articles.json').filter((a) => a.published !== false);
 
 const esc = (s) =>
