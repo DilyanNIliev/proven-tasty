@@ -77,7 +77,23 @@
 
 <section class="section" style="padding-top:20px;">
   <div class="grid">
-    <div class="empty-state">Скоро тук ще има рецепти. Ако имаш любима рецепта, <a href="contact.html">пиши ми</a> и ще я добавя.</div>
+    <a class="card" data-cat="salad" href="recipe-salata-riba-ton-avokado-krastavici.html">
+      <div class="card-img">
+        <span class="card-tag">Салата</span>
+        <button type="button" class="cart-toggle" data-recipe-id="salatariba" onclick="toggleCart('salatariba', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Салата с риба тон, авокадо, краставици, царевица и червен лук" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Салата с риба тон и авокадо</h3>
+        <p>Хрупкави краставици, царевица, червен лук и риба тон с кремообразен дресинг от скир и крема сирене, завършени с авокадо.</p>
+        <div class="card-meta">
+          <span>⏱ 15 мин</span>
+          <span>🔥 377 ккал</span>
+        </div>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -120,7 +136,7 @@
     © 2026 Доказано Вкусно — Приготвено с грижа за твоето хранене.
   </div>
 </footer>
-<script src="assets/recipes-data.js?v=4389c40a"></script>
+<script src="assets/recipes-data.js?v=941a7bef"></script>
 <script src="assets/site.js?v=9c76a0e0"></script>
 </body>
 </html>
