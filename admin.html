@@ -400,6 +400,7 @@
 
   var allRecipes = [];      // всички рецепти от data/recipes.json
   var editingId = null;     // id на рецептата, която редактираме
+  var editingOriginal = null; // оригиналът ѝ — пазим датата, „featured“ и др.
   var imageData = null;     // { dataUrl, base64, ext, w, h, bytes }
 
   /* ---------- транслитерация за slug ---------- */
@@ -594,8 +595,9 @@
       hero: img,
       imageAlt: $('f-imageAlt').value.trim() || $('f-title').value.trim(),
       keywords: $('f-keywords').value.trim(),
-      featured: false,
-      date: new Date().toISOString().slice(0, 10),
+      // при редакция рецептата запазва мястото си (дата) и дали е препоръчана
+      featured: editingOriginal ? !!editingOriginal.featured : false,
+      date: (editingOriginal && editingOriginal.date) || new Date().toISOString().slice(0, 10),
       ingredients: readIngredients(),
       steps: steps,
       note: $('f-note').value.trim(),
@@ -636,8 +638,16 @@
 
   /* ---------- зареждане на съществуващи рецепти ---------- */
   function loadRecipes(){
-    fetch('data/recipes.json', { cache: 'no-store' })
-      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+    var s = ghSettings();
+    // с токен четем направо от GitHub — там е най-новото, дори сайтът още да се обновява
+    var fromGithub = (s.owner && s.repo && s.token) ? ghLoadList().catch(function(){ return null; })
+                                                    : Promise.resolve(null);
+    fromGithub
+      .then(function(list){
+        if (list) return list;
+        return fetch('data/recipes.json', { cache: 'no-store' })
+          .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); });
+      })
       .then(function(list){
         allRecipes = list;
         renderList();
@@ -671,6 +681,7 @@
 
   function loadIntoForm(r){
     editingId = r.id;
+    editingOriginal = r;
     imageData = null;
     $('f-slug').dataset.touched = '1';
     $('f-title').value = r.title || '';
@@ -702,6 +713,7 @@
 
   function resetForm(){
     editingId = null;
+    editingOriginal = null;
     imageData = null;
     ['f-title','f-slug','f-cardTitle','f-excerpt','f-lead','f-imageUrl','f-imageAlt',
      'f-badge','f-time','f-kcal','f-protein','f-keywords','f-steps','f-note','f-ingPaste']
@@ -724,8 +736,8 @@
     var r = collect();
     var list = allRecipes.slice();
     var i = list.findIndex(function(x){ return x.id === r.id || x.slug === r.slug; });
-    if (i > -1) list[i] = r; else list.unshift(r);
-    list.sort(function(a, b){ return String(b.date).localeCompare(String(a.date)); });
+    // Редът във файла е редът на добавяне; генераторът подрежда по дата сам.
+    if (i > -1) list[i] = Object.assign({}, list[i], r); else list.push(r);
     return list;
   }
 
@@ -800,6 +812,20 @@
       });
   }
 
+  // Най-новият data/recipes.json направо от GitHub — сайтът се обновява с минута
+  // закъснение и иначе бихме презаписали току-що направена промяна.
+  function ghLoadList(){
+    var s = ghSettings();
+    return fetch('https://api.github.com/repos/' + s.owner + '/' + s.repo +
+                 '/contents/data/recipes.json?ref=' + encodeURIComponent(s.branch), {
+      headers: { 'Authorization': 'Bearer ' + s.token, 'Accept': 'application/vnd.github.raw+json' },
+      cache: 'no-store'
+    }).then(function(res){
+      if (!res.ok) throw new Error('data/recipes.json: ' + res.status);
+      return res.json();
+    });
+  }
+
   function publishToGithub(){
     var s = ghSettings();
     if (!s.owner || !s.repo || !s.token){
@@ -824,7 +850,9 @@
       });
     }
     chain
-      .then(function(){
+      .then(ghLoadList)
+      .then(function(latest){
+        allRecipes = latest;
         setStatus('info', 'Записвам рецептата…');
         var json = JSON.stringify(mergedList(), null, 2) + '\n';
         return ghPut('data/recipes.json', utf8ToBase64(json),
@@ -834,6 +862,7 @@
         allRecipes = mergedList();
         renderList();
         editingId = r.id;
+        editingOriginal = r;
         setStatus('ok',
           '<strong>Готово!</strong> Рецептата е записана в GitHub. ' +
           'Ако е включен автоматичният билд (GitHub Actions), страницата ' +
