@@ -308,7 +308,9 @@ function ingredientItems(r) {
   return (r.ingredients || [])
     .map((i) => {
       if (i.section) return `        <li class="ing-section">${esc(i.section)}</li>`;
-      const scalable = typeof i.amount === 'number' && String(i.text).includes(String(i.amount));
+      // site.js мащабира числата в самия текст („1,8 кг“, „½ ч.л.“, „2–3“), затова
+      // е достатъчно текстът да съдържа количество
+      const scalable = typeof i.amount === 'number' && /[\d½¼¾⅓⅔]/.test(String(i.text));
       const attrs = scalable ? ` data-amount="${i.amount}" data-text="${esc(i.text)}"` : '';
       return `        <li${attrs}>${esc(i.text)}</li>`;
     })
