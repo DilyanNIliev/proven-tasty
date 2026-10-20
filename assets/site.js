@@ -275,6 +275,29 @@
   }
 
   /* ---------- калкулатор за порции ---------- */
+  // Мащабира всяко количество в текста на съставката: „1,8 кг“, „½ ч.л.“, „2–3 с.л.“,
+  // „(около 320 г)“. Не пипа калории, градуси и „по 40 г на брой“.
+  var FRACTIONS = { '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 1 / 3, '⅔': 2 / 3 };
+  var QTY_RE = /(\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(?!\d|[.,]\d)(?!\s*(?:ккал|°|%|см|мин))/g;
+
+  function formatQty(v, hasDecimals) {
+    if (hasDecimals) return String(Math.round(v * 10) / 10).replace('.', ',');
+    if (v >= 10) return String(Math.round(v));
+    // под 1 — до четвъртинки, иначе до половинки
+    var q = v < 1 ? Math.max(0.25, Math.round(v * 4) / 4) : Math.round(v * 2) / 2;
+    var whole = Math.floor(q);
+    var frac = { 0.25: '¼', 0.5: '½', 0.75: '¾' }[q - whole] || '';
+    return (whole ? String(whole) : '') + frac;
+  }
+
+  function scaleText(text, factor) {
+    return text.replace(QTY_RE, function (m, tok, offset, s) {
+      if (/по\s*$/.test(s.slice(Math.max(0, offset - 4), offset))) return m;
+      var val = tok in FRACTIONS ? FRACTIONS[tok] : parseFloat(tok.replace(',', '.'));
+      return formatQty(val * factor, /[.,]/.test(tok));
+    });
+  }
+
   function initServings() {
     var box = document.querySelector('[data-servings]');
     if (!box) return;
@@ -287,13 +310,8 @@
       numEl.textContent = cur;
       var factor = cur / base;
       items.forEach(function (li) {
-        var amount = parseFloat(li.getAttribute('data-amount'));
         var text = li.getAttribute('data-text');
-        if (isNaN(amount)) return;
-        var scaled = amount * factor;
-        // големите количества се закръглят до цяло, малките — до половинки
-        scaled = scaled >= 10 ? Math.round(scaled) : Math.round(scaled * 2) / 2;
-        li.textContent = text.replace(String(amount), String(scaled));
+        li.textContent = factor === 1 ? text : scaleText(text, factor);
       });
       var servingsOut = document.querySelector('[data-servings-out]');
       if (servingsOut) servingsOut.textContent = cur;
