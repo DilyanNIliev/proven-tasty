@@ -604,6 +604,44 @@ footer{
 /* ==========================================================================
    АДАПТИВНОСТ
    ========================================================================== */
+/* ==========================================================================
+   СТАТИИ („Полезно“)
+   ========================================================================== */
+.article-tag{
+  font-size:0.72rem; letter-spacing:2px; text-transform:uppercase;
+  color:var(--clay); border:1px solid var(--clay-dim); border-radius:2px; padding:4px 10px;
+}
+.article-wrap{ max-width:760px; margin:0 auto; padding: 10px 24px 70px; position:relative; z-index:1; }
+.article-wrap > p{ color:#4a4736; line-height:1.85; margin-top:16px; }
+.article-wrap h2{
+  font-family:'Playfair Display', serif; color:var(--forest); font-weight:600;
+  font-size:1.5rem; margin:40px 0 6px;
+}
+.fact-item{
+  display:flex; gap:18px; align-items:flex-start;
+  padding:20px 0; border-bottom:1px solid var(--line-soft);
+}
+.fact-num{
+  flex:0 0 auto; width:42px; height:42px; border-radius:50%;
+  background:var(--forest); color:var(--cream-3);
+  font-family:'Playfair Display', serif; font-size:1.1rem; font-weight:600;
+  display:flex; align-items:center; justify-content:center;
+}
+.fact-item h3{ font-family:'Playfair Display', serif; color:var(--forest); font-size:1.12rem; font-weight:600; }
+.fact-item p{ margin-top:6px; color:#4a4736; line-height:1.75; font-size:0.96rem; }
+
+.food-table{ width:100%; border-collapse:collapse; margin-top:14px; font-size:0.96rem; }
+.food-table caption{ text-align:left; color:var(--muted); font-size:0.85rem; padding-bottom:8px; }
+.food-table th, .food-table td{ padding:10px 12px; border-bottom:1px solid var(--line-soft); text-align:left; }
+.food-table th{ font-weight:600; color:var(--forest); border-bottom:2px solid var(--line); font-size:0.85rem; letter-spacing:0.5px; }
+.food-table td.num, .food-table th.num{ text-align:right; white-space:nowrap; font-variant-numeric: tabular-nums; }
+.food-table tbody tr:nth-child(odd){ background:rgba(255,253,248,0.7); }
+.food-table .bar{
+  display:inline-block; height:6px; border-radius:3px; background:var(--clay-dim);
+  vertical-align:middle; margin-right:8px;
+}
+.food-table.plant .bar{ background:var(--forest-dim); }
+
 @media (max-width: 940px){
   .two-col{ grid-template-columns:1fr; gap:30px; }
 }
