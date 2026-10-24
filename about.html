@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=a72cb605">
+<link rel="stylesheet" href="assets/site.css?v=0acbf776">
 
 </head>
 <body>
@@ -83,27 +83,27 @@
 
 <section class="section" style="padding-top:20px;">
   <div class="section-head">
-    <div class="kicker">Нашата история</div>
-    <h2>Как започна всичко</h2>
+    <div class="kicker">Как работи сайтът</div>
+    <h2>Как се появява една рецепта</h2>
     <div class="divider"></div>
   </div>
 
   <div class="timeline">
     <div class="timeline-item">
-      <h4 class="display">2022 — Идеята</h4>
-      <p>Започнахме да записваме собствените си рецепти за чисто хранене, защото не намирахме прости, честни рецепти без излишни добавки.</p>
+      <h4 class="display">1 — Избор</h4>
+      <p>Подбирам рецепти, които бих сготвил вкъщи — от собствената си кухня, от семейството и от рецепти, които са ми харесали и съм искал да опитам.</p>
     </div>
     <div class="timeline-item">
-      <h4 class="display">2023 — Общността</h4>
-      <p>Малка група читатели прерасна в общност, която споделя рецепти, снимки и напредък всяка седмица.</p>
+      <h4 class="display">2 — Адаптиране</h4>
+      <p>Където има смисъл, ги правя по-балансирани: по-малко захар и бяло брашно, повече протеин, продукти, които се намират в български магазин.</p>
     </div>
     <div class="timeline-item">
-      <h4 class="display">2024 — Библиотеката</h4>
-      <p>Създадохме подредена библиотека от рецепти, категоризирани по хранене, за да е лесно да намериш точно каквото ти трябва.</p>
+      <h4 class="display">3 — Сметки</h4>
+      <p>За всяка рецепта изчислявам приблизителни калории и протеин на порция по средни стойности за продуктите и подреждам стъпките така, че да се следват лесно.</p>
     </div>
     <div class="timeline-item">
-      <h4 class="display">2026 — Днес</h4>
-      <p>Продължаваме да добавяме нови, тествани рецепти всяка седмица — без компромис с вкуса или времето ти.</p>
+      <h4 class="display">4 — Публикуване</h4>
+      <p>Рецептата влиза в менютата, търсачката и пазарския списък. Ако откриеш грешка или имаш идея как да стане по-добре — пиши ми.</p>
     </div>
   </div>
 </section>
@@ -128,28 +128,26 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
       </div>
       <h4 class="display">Реалистично време</h4>
-      <p>Всяка рецепта е тествана да отнема между 15 и 30 минути — защото знаем колко е ценно времето ти.</p>
+      <p>При всяка рецепта пише честно колко време отнема — и активната работа, и чакането във фурната или хладилника.</p>
     </div>
     <div class="value-card">
       <div class="icon-wrap">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6c-1.6-1.6-4.2-1.6-5.8 0L12 7.6 9 4.6c-1.6-1.6-4.2-1.6-5.8 0-1.6 1.6-1.6 4.2 0 5.8L12 19l8.8-8.6c1.6-1.6 1.6-4.2 0-5.8z"/></svg>
       </div>
-      <h4 class="display">Приготвено с грижа</h4>
-      <p>Всяка рецепта минава през нашата собствена кухня, преди да стигне до теб.</p>
+      <h4 class="display">Ясно и честно</h4>
+      <p>Точни количества, стъпка по стъпка и калории на порция, отбелязани като приблизителни — без скрити съставки и без обещания за чудеса.</p>
     </div>
   </div>
 </section>
 
 </main>
-<section class="cta-band" id="subscribe">
-  <h2 class="display">Нова рецепта всяка седмица</h2>
-  <p>Абонирай се и получавай прости, вкусни рецепти директно в пощата си.</p>
-  <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Благодарим!';">
-    <label class="sr-only" for="sub-email">Твоят имейл</label>
-    <input id="sub-email" type="email" placeholder="Твоят имейл" required>
-    <button type="submit">Абонирай се</button>
-  </form>
-  <div class="cta-note">Без спам. Отписваш се с един клик.</div>
+<section class="cta-band">
+  <h2 class="display">Не знаеш какво да сготвиш?</h2>
+  <p>Избери няколко рецепти за седмицата и сайтът сам ще събере какво да купиш.</p>
+  <div class="cta-actions">
+    <a class="cta-btn" href="recipes.html">Виж всички рецепти</a>
+    <a class="cta-btn ghost" href="shopping-list.html">Пазарски списък</a>
+  </div>
 </section>
 <footer>
   <div class="footer-inner">
@@ -163,7 +161,7 @@
       <a href="about.html">За нас</a>
       <a href="contact.html">Контакти</a>
       <a href="shopping-list.html">Пазарски списък</a>
-      <a href="index.html#subscribe">Абонамент</a>
+      <a href="privacy.html">Поверителност</a>
     </nav>
   </div>
   <div class="footer-bottom">
@@ -171,6 +169,6 @@
   </div>
 </footer>
 <script src="assets/recipes-data.js?v=db4040a8"></script>
-<script src="assets/site.js?v=36428df5"></script>
+<script src="assets/site.js?v=c8040022"></script>
 </body>
 </html>

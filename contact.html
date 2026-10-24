@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=a72cb605">
+<link rel="stylesheet" href="assets/site.css?v=0acbf776">
 
 </head>
 <body>
@@ -72,50 +72,23 @@
 <div class="page-header">
   <div class="breadcrumb"><a href="index.html">Начало</a> / Контакти</div>
   <h1 class="display">Свържи се с мен</h1>
-  <p>Имаш въпрос, предложение за рецепта или просто искаш да кажеш здрасти? Пиши ми — чета всичко лично.</p>
+  <p>Имаш въпрос, предложение за рецепта или просто искаш да кажеш здрасти? Пиши ми — чета всяко съобщение.</p>
 </div>
 
-<section class="section" style="padding-top:10px;">
-  <div class="contact-wrap">
-    <form class="contact-form" onsubmit="event.preventDefault(); alert('Благодаря! Съобщението е изпратено (демо форма).');">
-      <div>
-        <label for="c-name">Име</label>
-        <input type="text" id="c-name" required>
-      </div>
-      <div>
-        <label for="c-email">Имейл</label>
-        <input type="email" id="c-email" required>
-      </div>
-      <div>
-        <label for="c-msg">Съобщение</label>
-        <textarea id="c-msg" required></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Изпрати съобщение</button>
-    </form>
-
-    <div class="contact-info">
-      <div class="row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
-        hello@dokazanovkusno.bg
-      </div>
-      <div class="row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-        Отговарям обикновено до 2 работни дни
-      </div>
+<section class="section" style="padding-top:10px; max-width:640px;">
+  <div class="contact-pending">
+      <p>Имейлът за контакт ще бъде добавен скоро. Дотогава можеш да разгледаш <a href="recipes.html">всички рецепти</a>.</p>
     </div>
-  </div>
 </section>
 
 </main>
-<section class="cta-band" id="subscribe">
-  <h2 class="display">Нова рецепта всяка седмица</h2>
-  <p>Абонирай се и получавай прости, вкусни рецепти директно в пощата си.</p>
-  <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Благодарим!';">
-    <label class="sr-only" for="sub-email">Твоят имейл</label>
-    <input id="sub-email" type="email" placeholder="Твоят имейл" required>
-    <button type="submit">Абонирай се</button>
-  </form>
-  <div class="cta-note">Без спам. Отписваш се с един клик.</div>
+<section class="cta-band">
+  <h2 class="display">Не знаеш какво да сготвиш?</h2>
+  <p>Избери няколко рецепти за седмицата и сайтът сам ще събере какво да купиш.</p>
+  <div class="cta-actions">
+    <a class="cta-btn" href="recipes.html">Виж всички рецепти</a>
+    <a class="cta-btn ghost" href="shopping-list.html">Пазарски списък</a>
+  </div>
 </section>
 <footer>
   <div class="footer-inner">
@@ -129,7 +102,7 @@
       <a href="about.html">За нас</a>
       <a href="contact.html">Контакти</a>
       <a href="shopping-list.html">Пазарски списък</a>
-      <a href="index.html#subscribe">Абонамент</a>
+      <a href="privacy.html">Поверителност</a>
     </nav>
   </div>
   <div class="footer-bottom">
@@ -137,6 +110,6 @@
   </div>
 </footer>
 <script src="assets/recipes-data.js?v=db4040a8"></script>
-<script src="assets/site.js?v=36428df5"></script>
+<script src="assets/site.js?v=c8040022"></script>
 </body>
 </html>

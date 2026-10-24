@@ -335,6 +335,72 @@
   }
 
   /* ---------- старт ---------- */
+  /* ---------- бисквитки: Google Analytics само след съгласие ---------- */
+  var CONSENT_KEY = 'pt_consent';
+  function getConsent() { try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; } }
+  function setConsent(v) { try { localStorage.setItem(CONSENT_KEY, v); } catch (e) {} }
+
+  function loadAnalytics() {
+    if (!window.PT_GA_ID || window.ptGaLoaded) return;
+    window.ptGaLoaded = true;
+    window.gtag('consent', 'update', { analytics_storage: 'granted' });
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(window.PT_GA_ID);
+    document.head.appendChild(s);
+  }
+
+  function showConsentBanner() {
+    if (document.querySelector('.consent-banner')) return;
+    var box = document.createElement('div');
+    box.className = 'consent-banner';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-label', 'Бисквитки');
+    box.innerHTML =
+      '<p>Използваме бисквитки за анонимна статистика (Google Analytics), за да знаем кои рецепти се четат най-много. ' +
+      'Включват се само ако ги приемеш. <a href="privacy.html">Научи повече</a></p>' +
+      '<div class="consent-actions">' +
+      '<button type="button" data-consent="denied">Отказвам</button>' +
+      '<button type="button" data-consent="granted">Приемам</button></div>';
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-consent]');
+      if (!b) return;
+      var v = b.getAttribute('data-consent');
+      setConsent(v);
+      if (v === 'granted') loadAnalytics();
+      box.remove();
+    });
+    document.body.appendChild(box);
+  }
+
+  function initConsent() {
+    document.querySelectorAll('[data-consent-reset]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        try { localStorage.removeItem(CONSENT_KEY); } catch (e) {}
+        if (window.PT_GA_ID) showConsentBanner();
+        else alert('В момента сайтът не използва бисквитки за статистика.');
+      });
+    });
+    if (!window.PT_GA_ID) return;
+    var c = getConsent();
+    if (c === 'granted') loadAnalytics();
+    else if (c !== 'denied') showConsentBanner();
+  }
+
+  /* ---------- контакти: формата отваря пощата с готово писмо ---------- */
+  function initContactForm() {
+    var form = document.querySelector('form[data-mailto]');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = form.elements.name.value.trim();
+      var subject = form.elements.subject.value.trim() || 'Съобщение от сайта';
+      var body = form.elements.message.value.trim() + (name ? '\n\n— ' + name : '');
+      location.href = 'mailto:' + form.getAttribute('data-mailto') +
+        '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    });
+  }
+
   function init() {
     updateCartUI();
     renderShoppingList();
@@ -342,6 +408,8 @@
     initFilters();
     initServings();
     initHeaderShadow();
+    initConsent();
+    initContactForm();
     document.querySelectorAll('.mobile-menu a').forEach(function (a) {
       a.addEventListener('click', closeMobileMenu);
     });
