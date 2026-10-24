@@ -1,12 +1,13 @@
 {
   "name": "Доказано Вкусно",
   "tagline": "Рецепти, приготвени с грижа",
-  "description": "Прости, тествани рецепти за чисто хранене — с точни съставки, ясни стъпки и автоматичен пазарски списък.",
+  "description": "Прости рецепти за чисто хранене — с точни съставки, ясни стъпки, калории на порция и автоматичен пазарски списък.",
   "url": "",
   "lang": "bg",
   "author": "Доказано Вкусно",
   "adsenseClient": "",
   "gaMeasurementId": "",
+  "contactEmail": "",
   "nav": [
     { "href": "salads.html", "label": "Салати" },
     { "href": "mains.html", "label": "Основни" },
@@ -36,6 +37,6 @@
     { "href": "about.html", "label": "За нас" },
     { "href": "contact.html", "label": "Контакти" },
     { "href": "shopping-list.html", "label": "Пазарски списък" },
-    { "href": "index.html#subscribe", "label": "Абонамент" }
+    { "href": "privacy.html", "label": "Поверителност" }
   ]
 }

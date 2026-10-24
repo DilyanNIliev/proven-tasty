@@ -106,8 +106,7 @@ ${ogImage ? `<meta property="og:image" content="${esc(ogImage)}">` : ''}
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${asset('assets/site.css')}">
 ${jsonld.map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n')}
-${site.gaMeasurementId ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${site.gaMeasurementId}"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${site.gaMeasurementId}');</script>` : ''}
+${site.gaMeasurementId ? `<script>window.PT_GA_ID='${site.gaMeasurementId}';window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});gtag('js',new Date());gtag('config','${site.gaMeasurementId}');</script>` : ''}
 ${site.adsenseClient ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${site.adsenseClient}" crossorigin="anonymous"></script>` : ''}
 ${extraHead}`.replace(/\n{2,}/g, '\n');
 }
@@ -157,15 +156,13 @@ ${site.nav.map((n) => `  <a href="${esc(n.href)}"${n.href === active ? ' aria-cu
 }
 
 function ctaBand() {
-  return `<section class="cta-band" id="subscribe">
-  <h2 class="display">Нова рецепта всяка седмица</h2>
-  <p>Абонирай се и получавай прости, вкусни рецепти директно в пощата си.</p>
-  <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Благодарим!';">
-    <label class="sr-only" for="sub-email">Твоят имейл</label>
-    <input id="sub-email" type="email" placeholder="Твоят имейл" required>
-    <button type="submit">Абонирай се</button>
-  </form>
-  <div class="cta-note">Без спам. Отписваш се с един клик.</div>
+  return `<section class="cta-band">
+  <h2 class="display">Не знаеш какво да сготвиш?</h2>
+  <p>Избери няколко рецепти за седмицата и сайтът сам ще събере какво да купиш.</p>
+  <div class="cta-actions">
+    <a class="cta-btn" href="recipes.html">Виж всички рецепти</a>
+    <a class="cta-btn ghost" href="shopping-list.html">Пазарски списък</a>
+  </div>
 </section>`;
 }
 
@@ -197,6 +194,24 @@ function adSlot(slotId) {
 function scripts() {
   return `<script src="${asset('assets/recipes-data.js')}"></script>
 <script src="${asset('assets/site.js')}"></script>`;
+}
+
+/** Контакти: формата отваря пощата на посетителя към site.contactEmail. */
+function contactBlock() {
+  const email = site.contactEmail;
+  if (!email) {
+    return `<div class="contact-pending">
+      <p>Имейлът за контакт ще бъде добавен скоро. Дотогава можеш да разгледаш <a href="recipes.html">всички рецепти</a>.</p>
+    </div>`;
+  }
+  return `<form class="contact-form" data-mailto="${esc(email)}">
+      <label class="field"><span>Име</span><input type="text" name="name" required></label>
+      <label class="field"><span>Тема</span><input type="text" name="subject" placeholder="Въпрос, идея за рецепта…"></label>
+      <label class="field"><span>Съобщение</span><textarea name="message" rows="6" required></textarea></label>
+      <button type="submit" class="detail-add-btn">Напиши имейл</button>
+      <p class="contact-hint">Бутонът отваря пощенската ти програма с готово съобщение.</p>
+    </form>
+    <p class="contact-direct">Или пиши директно на <a href="mailto:${esc(email)}">${esc(email)}</a></p>`;
 }
 
 /** Обвива съдържанието в пълна HTML страница. */
@@ -297,6 +312,7 @@ function expandPlaceholders(html) {
   });
 
   html = html.replace(/<!--PT:AD(?:\s+slot="([^"]*)")?-->/g, (_, slot) => adSlot(slot));
+  html = html.replace(/<!--PT:CONTACT-->/g, () => contactBlock());
   return html;
 }
 
@@ -387,6 +403,7 @@ function recipePage(r) {
     <div class="item"><div class="val" data-servings-out>${esc(r.servings)}</div><div class="lbl">Порции</div></div>
     ${r.kcal ? `<div class="item"><div class="val">${esc(r.kcal)}</div><div class="lbl">Ккал / порция</div></div>` : ''}
     ${r.protein ? `<div class="item"><div class="val">${esc(r.protein)}</div><div class="lbl">Протеин</div></div>` : ''}
+    ${r.kcal || r.protein ? `<p class="nutri-note">Калориите и протеинът са приблизителни — изчислени по средни стойности за продуктите.</p>` : ''}
   </div>
 
   <div class="two-col">
@@ -489,6 +506,8 @@ const PAGES = [
   { file: 'facts-banana.html', title: '10 факта за банана', description: 'Какви витамини и минерали съдържа бананът и как точно помага на тялото ти.', active: 'healthy.html' },
   { file: 'facts-almonds.html', title: '10 факта за бадемите', description: 'Какви витамини и минерали съдържат бадемите и защо са добра закуска.', active: 'healthy.html' },
   { file: 'facts-walnuts.html', title: '10 факта за орехите', description: 'Какви витамини и минерали съдържат орехите и как помагат на мозъка и сърцето.', active: 'healthy.html' },
+  { file: 'privacy.html', title: 'Политика за поверителност', description: 'Какви данни събира сайтът Доказано Вкусно, как се използват бисквитките и какви са правата ти.', active: '' },
+  { file: '404.html', title: 'Страницата не е намерена', description: 'Тази страница не съществува или е преместена.', active: '', showCta: false, sitemap: false },
   { file: 'facts-iron.html', title: 'Храни, богати на желязо', description: 'Кои животински и растителни храни съдържат най-много желязо (мг на 100 г) и как да го усвояваш по-добре.', active: 'healthy.html' },
 ];
 
@@ -520,6 +539,17 @@ function buildDataFile() {
     'window.RECIPES = ' + JSON.stringify(payload, null, 1) + ';\n');
 }
 
+/** ads.txt е задължителен за AdSense; без номер на издател файлът не се публикува. */
+function buildAdsTxt() {
+  const full = path.join(ROOT, 'ads.txt');
+  const pub = (site.adsenseClient || '').replace(/^ca-/, '');
+  if (!pub) {
+    if (fs.existsSync(full)) fs.unlinkSync(full);
+    return;
+  }
+  write('ads.txt', `google.com, ${pub}, DIRECT, f08c47fec0942fa0\n`);
+}
+
 function buildSitemap() {
   // Без зададен домейн sitemap-ът е безсмислен (адресите в него трябва да са
   // пълни). Трием и стар файл, за да не остане да сочи към несъществуващ адрес.
@@ -535,7 +565,7 @@ function buildSitemap() {
   }
   const base = site.url.replace(/\/$/, '');
   const urls = [
-    ...PAGES.map((p) => ({ loc: p.file === 'index.html' ? '' : p.file, pri: p.file === 'index.html' ? '1.0' : '0.7' })),
+    ...PAGES.filter((p) => p.sitemap !== false).map((p) => ({ loc: p.file === 'index.html' ? '' : p.file, pri: p.file === 'index.html' ? '1.0' : '0.7' })),
     ...recipes.map((r) => ({ loc: recipeHref(r), pri: '0.9', lastmod: r.date })),
   ];
   write('sitemap.xml',
@@ -579,6 +609,7 @@ function build() {
   }
 
   buildSitemap();
+  buildAdsTxt();
   if (site.url) written.push('sitemap.xml', 'robots.txt');
 
   // изчистваме страници на изтрити рецепти
