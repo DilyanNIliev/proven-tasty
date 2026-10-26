@@ -440,6 +440,17 @@ ${(r.steps || []).map((s) => `        <li>${esc(s)}</li>`).join('\n')}
   </div>
 ${r.note ? `
   <div class="note-strip">${esc(r.note)}</div>` : ''}
+  <div class="plating">
+    <div class="box-title">
+      <div class="icon plate" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg>
+      </div>
+      <h4>Предложение за сервиране</h4>
+    </div>
+${r.plating
+    ? String(r.plating).split(/\n+/).filter(Boolean).map((t) => `    <p>${esc(t)}</p>`).join('\n')
+    : '    <p class="soon">Очаквайте скоро.</p>'}
+  </div>
 </div>
 ${adSlot()}
 ${(r.why || []).length ? `
