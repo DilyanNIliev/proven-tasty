@@ -694,6 +694,15 @@ footer{
 }
 .consent-actions button[data-consent="granted"]{ background:var(--forest); color:var(--cream-2); }
 
+/* ---------- предложение за сервиране ---------- */
+.plating{
+  margin-top:26px; padding:20px 22px; border:1px solid var(--line);
+  border-radius:var(--radius-lg); background:var(--cream-3);
+}
+.plating p{ margin-top:10px; color:#4a4736; line-height:1.75; font-size:0.96rem; }
+.plating p.soon{ color:var(--muted-soft); font-style:italic; }
+.icon.plate{ background:var(--gold); }
+
 @media (max-width: 940px){
   .two-col{ grid-template-columns:1fr; gap:30px; }
 }
