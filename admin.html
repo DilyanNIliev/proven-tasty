@@ -214,9 +214,10 @@
         </details>
 
         <label class="field" style="margin-top:14px;">
-          <span>Описание на снимката (alt — за Google и незрящи)</span>
-          <input type="text" id="f-imageAlt" placeholder="напр. Чиния с пилешко и ориз">
+          <span>Описание на снимката (alt текст) *</span>
+          <input type="text" id="f-imageAlt" placeholder="напр. Домашна мързелива баница със сирене в тава">
         </label>
+        <div class="hint">Задължително при нова снимка. Google чете този текст, за да разбере какво има на снимката, а незрящите го чуват. Опиши с 6–12 думи какво се вижда и включи името на ястието — без „снимка на…“.</div>
       </div>
 
       <div class="panel">
@@ -620,6 +621,8 @@
     if (!r.time) errs.push('време за приготвяне');
     // снимката е задължителна само за нова рецепта — старите може да се редактират и без нея
     if (!r.image && !editingOriginal) errs.push('снимка');
+    // при качена нова снимка alt текстът е задължителен (за Google и за незрящи)
+    if (imageData && !$('f-imageAlt').value.trim()) errs.push('описание на снимката (alt текст)');
     if (!r.ingredients.length) errs.push('съставки');
     if (!r.steps.length) errs.push('стъпки за приготвяне');
     return errs;
