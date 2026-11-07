@@ -13,6 +13,7 @@
     { "href": "mains.html", "label": "Основни" },
     { "href": "breakfast.html", "label": "Закуски" },
     { "href": "desserts.html", "label": "Десерти" },
+    { "href": "lenten.html", "label": "Постни" },
     { "href": "athletes.html", "label": "За спортисти" },
     { "href": "healthy.html", "label": "Полезно" }
   ],
@@ -21,6 +22,7 @@
     { "slug": "mains", "label": "Основни", "key": "mains" },
     { "slug": "breakfast", "label": "Закуски", "key": "breakfast" },
     { "slug": "desserts", "label": "Десерти", "key": "desserts" },
+    { "slug": "lenten", "label": "Постни", "key": "lenten" },
     { "slug": "athletes", "label": "За спортисти", "key": "athletes" }
   ],
   "meals": [

@@ -346,7 +346,7 @@ function recipeJsonLd(r) {
     '@type': 'Recipe',
     name: r.title,
     description: r.lead || r.excerpt,
-    image: [r.hero || r.image],
+    image: [r.hero || r.image, ...galleryImages(r).map((g) => g.src)].filter(Boolean),
     author: { '@type': 'Organization', name: site.author },
     datePublished: r.date,
     inLanguage: site.lang,
@@ -374,6 +374,23 @@ function breadcrumbJsonLd(items) {
   };
 }
 
+/** Допълнителни снимки (до 3) — миниатюри под голямата снимка; клик ги показва в нея. */
+function galleryImages(r) {
+  return (r.gallery || []).filter((g) => g && g.src).slice(0, 3);
+}
+
+function galleryThumbs(r) {
+  const extra = galleryImages(r);
+  if (!extra.length) return '';
+  const all = [{ src: heroImage(r), alt: r.imageAlt || r.title }, ...extra.map((g) => ({ src: g.src, alt: g.alt || r.title }))];
+  return `  <div class="recipe-gallery" role="group" aria-label="Снимки на рецептата">
+${all.map((g, i) => `    <button type="button" class="gallery-thumb${i === 0 ? ' active' : ''}" data-src="${esc(g.src)}" data-alt="${esc(g.alt)}" aria-label="Снимка ${i + 1} от ${all.length}: ${esc(g.alt)}"${i === 0 ? ' aria-pressed="true"' : ' aria-pressed="false"'}>
+      <img src="${esc(g.src)}" alt="" loading="lazy" decoding="async" width="160" height="120">
+    </button>`).join('\n')}
+  </div>
+`;
+}
+
 function recipePage(r) {
   const related = relatedRecipes(r);
   const body = `<div class="page-header" style="padding-bottom:0;">
@@ -384,8 +401,9 @@ function recipePage(r) {
 
 <div class="recipe-hero">
   <div class="recipe-hero-img">
-    <img src="${esc(heroImage(r))}"${imgClass(heroImage(r))} alt="${esc(r.imageAlt || r.title)}" width="1400" height="600" fetchpriority="high" decoding="async">
+    <img src="${esc(heroImage(r))}"${imgClass(heroImage(r))} alt="${esc(r.imageAlt || r.title)}" width="1400" height="600" fetchpriority="high" decoding="async" data-gallery-main>
   </div>
+${galleryThumbs(r)}
 
   <div class="recipe-actions">
     <button class="detail-add-btn" data-recipe-id="${esc(r.id)}" onclick="toggleCart('${esc(r.id)}', event)">
@@ -508,6 +526,7 @@ const PAGES = [
   { file: 'mains.html', title: 'Основни ястия', description: 'Засищащи основни ястия с ясни стъпки и точни съставки.', active: 'mains.html' },
   { file: 'breakfast.html', title: 'Закуски', description: 'Бързи и засищащи закуски, с които денят започва правилно.', active: 'breakfast.html' },
   { file: 'desserts.html', title: 'Десерти', description: 'Домашни десерти без излишни съставки и без стабилизатори.', active: 'desserts.html' },
+  { file: 'lenten.html', title: 'Постни ястия за Коледните пости и Бъдни вечер', description: 'Постни рецепти без месо, мляко и яйца — за Коледните пости и трапезата на Бъдни вечер: леща, булгур, манджи и постни десерти.', active: 'lenten.html' },
   { file: 'athletes.html', title: 'За спортисти', description: 'Високопротеинови ястия, които работят за тренировките ти.', active: 'athletes.html' },
   { file: 'healthy.html', title: 'Полезно', description: 'Кратки статии за храните — какви витамини съдържат и как помагат на тялото.', active: 'healthy.html' },
   { file: 'about.html', title: 'За нас', description: 'Защо създадохме Доказано Вкусно и какви принципи следваме.', active: '' },

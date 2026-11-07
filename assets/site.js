@@ -401,6 +401,24 @@
     });
   }
 
+  /* Галерия на рецептата: миниатюрите сменят голямата снимка */
+  function initGallery() {
+    var main = document.querySelector('[data-gallery-main]');
+    var thumbs = document.querySelectorAll('.gallery-thumb');
+    if (!main || !thumbs.length) return;
+    thumbs.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        main.src = btn.getAttribute('data-src');
+        main.alt = btn.getAttribute('data-alt');
+        main.classList.remove('is-placeholder');
+        thumbs.forEach(function (t) {
+          t.classList.toggle('active', t === btn);
+          t.setAttribute('aria-pressed', t === btn ? 'true' : 'false');
+        });
+      });
+    });
+  }
+
   function init() {
     updateCartUI();
     renderShoppingList();
@@ -410,6 +428,7 @@
     initHeaderShadow();
     initConsent();
     initContactForm();
+    initGallery();
     document.querySelectorAll('.mobile-menu a').forEach(function (a) {
       a.addEventListener('click', closeMobileMenu);
     });
