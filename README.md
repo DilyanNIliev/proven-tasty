@@ -78,11 +78,12 @@ node tools/build.mjs
 | `excerpt` | едно изречение за картичката и Google | да |
 | `lead` | уводният текст на страницата | не |
 | `meal` | `breakfast` / `lunch` / `dinner` / `salad` / `dessert` — за филтъра | да |
-| `categories` | в кои менюта излиза: `mains`, `breakfast`, `desserts`, `salads`, `athletes` | да |
+| `categories` | в кои менюта излиза: `mains`, `breakfast`, `desserts`, `salads`, `lenten` (постни), `athletes` | да |
 | `badge` | етикетът върху снимката | не |
 | `time` | време в минути (число) | да |
 | `servings`, `kcal`, `protein` | порции, калории, протеин | `servings` |
 | `image`, `hero`, `imageAlt` | снимки и описание на снимката | да |
+| `gallery` | до 3 допълнителни снимки: `[{src, alt}]` — миниатюри под голямата снимка | не |
 | `keywords` | думи за търсачката в сайта | не |
 | `ingredients` | списък: `{text, name, amount, unit}` или `{section}` за подзаглавие | да |
 | `steps` | списък от стъпки | да |

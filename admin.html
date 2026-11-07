@@ -100,6 +100,15 @@
   .drop:hover, .drop.over{ border-color:var(--clay); background:rgba(182,90,38,.04); color:var(--clay); }
   .img-preview{ margin-top:14px; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); display:none; }
   .img-preview img{ width:100%; display:block; aspect-ratio:4/3; object-fit:cover; }
+  .gallery-rows{ display:flex; flex-direction:column; gap:10px; margin:10px 0; }
+  .gallery-row{ display:grid; grid-template-columns: 84px 1fr 34px; gap:10px; align-items:center; }
+  .gallery-row img{ width:84px; aspect-ratio:4/3; object-fit:cover; border-radius:var(--radius); border:1px solid var(--line); display:block; }
+  .gallery-row input{ padding:9px 11px; font-size:0.88rem; }
+  .gallery-row .del{
+    width:34px; height:34px; border:1px solid var(--line); background:#fff; border-radius:var(--radius);
+    cursor:pointer; font-size:1rem; color:var(--muted);
+  }
+  .gallery-row .del:hover{ border-color:var(--clay); color:var(--clay); }
   .img-meta{ font-size:0.78rem; color:var(--muted); padding:8px 10px; background:var(--cream-2); }
 
   /* преглед */
@@ -218,6 +227,14 @@
           <input type="text" id="f-imageAlt" placeholder="напр. Домашна мързелива баница със сирене в тава">
         </label>
         <div class="hint">Задължително при нова снимка. Google чете този текст, за да разбере какво има на снимката, а незрящите го чуват. Опиши с 6–12 думи какво се вижда и включи името на ястието — без „снимка на…“.</div>
+
+        <div class="field" style="margin-top:18px;">
+          <span>Още снимки (до 3, по желание)</span>
+        </div>
+        <div class="hint">Например съставките, процесът и ястието в чиния. Показват се като миниатюри под голямата снимка. Всяка има нужда от свое описание (alt).</div>
+        <div class="gallery-rows" id="gallery-rows"></div>
+        <button class="ui small" type="button" id="btn-add-photo">+ Добави снимка</button>
+        <input type="file" id="f-gallery-file" accept="image/*" multiple hidden>
       </div>
 
       <div class="panel">
@@ -387,6 +404,7 @@
     { slug:'mains',     label:'Основни' },
     { slug:'breakfast', label:'Закуски' },
     { slug:'desserts',  label:'Десерти' },
+    { slug:'lenten',    label:'Постни' },
     { slug:'athletes',  label:'За спортисти' }
   ];
   var MEALS = [
@@ -408,6 +426,8 @@
   var editingId = null;     // id на рецептата, която редактираме
   var editingOriginal = null; // оригиналът ѝ — пазим датата, „featured“ и др.
   var imageData = null;     // { dataUrl, base64, ext, w, h, bytes }
+  var gallery = [];         // допълнителни снимки: { src, alt } или { data: {…като imageData}, alt }
+  var GALLERY_MAX = 3;
 
   /* ---------- транслитерация за slug ---------- */
   var MAP = {
@@ -539,8 +559,8 @@
   }
 
   /* ---------- обработка на снимка ---------- */
-  function handleFile(file){
-    if (!file || !/^image\//.test(file.type)) { setStatus('err', 'Това не е файл със снимка.'); return; }
+  // смалява снимката до 1400 px ширина и я компресира като JPEG
+  function resizeImage(file, done){
     var reader = new FileReader();
     reader.onload = function(e){
       var img = new Image();
@@ -553,17 +573,77 @@
         c.getContext('2d').drawImage(img, 0, 0, w, h);
         var dataUrl = c.toDataURL('image/jpeg', 0.82);
         var base64 = dataUrl.split(',')[1];
-        imageData = { dataUrl: dataUrl, base64: base64, ext: 'jpg', w: w, h: h,
-                      bytes: Math.round(base64.length * 3 / 4) };
-        $('img-el').src = dataUrl;
-        $('img-preview').style.display = 'block';
-        $('img-meta').textContent = w + '×' + h + ' пиксела · ' + Math.round(imageData.bytes/1024) + ' KB · ще се запише като images/recipes/<slug>.jpg';
-        $('f-imageUrl').value = '';
-        sync();
+        done({ dataUrl: dataUrl, base64: base64, ext: 'jpg', w: w, h: h,
+               bytes: Math.round(base64.length * 3 / 4) });
       };
       img.src = e.target.result;
     };
     reader.readAsDataURL(file);
+  }
+
+  function handleFile(file){
+    if (!file || !/^image\//.test(file.type)) { setStatus('err', 'Това не е файл със снимка.'); return; }
+    resizeImage(file, function(data){
+      imageData = data;
+      var w = data.w, h = data.h, dataUrl = data.dataUrl;
+      $('img-el').src = dataUrl;
+      $('img-preview').style.display = 'block';
+      $('img-meta').textContent = w + '×' + h + ' пиксела · ' + Math.round(imageData.bytes/1024) + ' KB · ще се запише като images/recipes/<slug>.jpg';
+      $('f-imageUrl').value = '';
+      sync();
+    });
+  }
+
+  /* ---------- допълнителни снимки ---------- */
+  // пътищата на новите снимки: <slug>-2.jpg, -3, -4 — без да застъпват вече записаните
+  function galleryPaths(slug){
+    var used = {};
+    gallery.forEach(function(g){ if (g.src) used[g.src] = true; });
+    var n = 2;
+    return gallery.map(function(g){
+      if (g.src) return g.src;
+      var p;
+      do { p = 'images/recipes/' + slug + '-' + n + '.jpg'; n++; } while (used[p]);
+      used[p] = true;
+      return p;
+    });
+  }
+
+  function renderGallery(){
+    var box = $('gallery-rows');
+    box.innerHTML = '';
+    gallery.forEach(function(g, i){
+      var row = document.createElement('div');
+      row.className = 'gallery-row';
+      row.innerHTML = '<img alt="">' +
+        '<input type="text" placeholder="Описание (alt), напр. Парче баница в чиния">' +
+        '<button type="button" class="del" title="Махни снимката" aria-label="Махни снимката">×</button>';
+      row.querySelector('img').src = g.data ? g.data.dataUrl : g.src;
+      var input = row.querySelector('input');
+      input.value = g.alt || '';
+      input.addEventListener('input', function(){ g.alt = input.value; sync(); });
+      row.querySelector('.del').addEventListener('click', function(){
+        gallery.splice(i, 1);
+        renderGallery();
+        sync();
+      });
+      box.appendChild(row);
+    });
+    $('btn-add-photo').style.display = gallery.length >= GALLERY_MAX ? 'none' : '';
+  }
+
+  function addGalleryFiles(files){
+    var free = GALLERY_MAX - gallery.length;
+    var list = Array.prototype.filter.call(files || [], function(f){ return /^image\//.test(f.type); });
+    if (list.length > free) setStatus('info', 'Допълнителните снимки са най-много ' + GALLERY_MAX + ' — взех първите ' + free + '.');
+    list.slice(0, free).forEach(function(file){
+      resizeImage(file, function(data){
+        if (gallery.length >= GALLERY_MAX) return;
+        gallery.push({ data: data, alt: '' });
+        renderGallery();
+        sync();
+      });
+    });
   }
 
   /* ---------- събиране на рецептата ---------- */
@@ -608,6 +688,10 @@
       steps: steps,
       note: $('f-note').value.trim(),
       plating: $('f-plating').value.trim(),
+      // празна галерия → полето отпада от JSON, вместо да остане „gallery: []“
+      gallery: gallery.length ? galleryPaths(slug).map(function(src, i){
+        return { src: src, alt: (gallery[i].alt || '').trim() || $('f-title').value.trim() };
+      }) : undefined,
       why: readWhy()
     };
   }
@@ -623,6 +707,7 @@
     if (!r.image && !editingOriginal) errs.push('снимка');
     // при качена нова снимка alt текстът е задължителен (за Google и за незрящи)
     if (imageData && !$('f-imageAlt').value.trim()) errs.push('описание на снимката (alt текст)');
+    if (gallery.some(function(g){ return g.data && !(g.alt || '').trim(); })) errs.push('описание (alt) на допълнителните снимки');
     if (!r.ingredients.length) errs.push('съставки');
     if (!r.steps.length) errs.push('стъпки за приготвяне');
     return errs;
@@ -693,6 +778,8 @@
     editingId = r.id;
     editingOriginal = r;
     imageData = null;
+    gallery = (r.gallery || []).map(function(g){ return { src: g.src, alt: g.alt || '' }; });
+    renderGallery();
     $('f-slug').dataset.touched = '1';
     $('f-title').value = r.title || '';
     $('f-slug').value = r.slug || '';
@@ -726,6 +813,8 @@
     editingId = null;
     editingOriginal = null;
     imageData = null;
+    gallery = [];
+    renderGallery();
     ['f-title','f-slug','f-cardTitle','f-excerpt','f-lead','f-imageUrl','f-imageAlt',
      'f-badge','f-time','f-kcal','f-protein','f-keywords','f-steps','f-note','f-plating','f-ingPaste']
       .forEach(function(id){ $(id).value = ''; });
@@ -860,6 +949,13 @@
                      'Снимка за рецепта: ' + r.title);
       });
     }
+    gallery.forEach(function(g, i){
+      if (!g.data) return;
+      chain = chain.then(function(){
+        setStatus('info', 'Качвам допълнителна снимка ' + (i + 1) + '…');
+        return ghPut(r.gallery[i].src, g.data.base64, 'Снимка за рецепта: ' + r.title);
+      });
+    });
     chain
       .then(ghLoadList)
       .then(function(latest){
@@ -874,6 +970,8 @@
         renderList();
         editingId = r.id;
         editingOriginal = r;
+        gallery = (r.gallery || []).map(function(g){ return { src: g.src, alt: g.alt }; });
+        renderGallery();
         setStatus('ok',
           '<strong>Готово!</strong> Рецептата е записана в GitHub. ' +
           'Ако е включен автоматичният билд (GitHub Actions), страницата ' +
@@ -954,6 +1052,13 @@
         a.download = r.slug + '.jpg';
         a.click();
       }
+      gallery.forEach(function(g, i){
+        if (!g.data) return;
+        var b = document.createElement('a');
+        b.href = g.data.dataUrl;
+        b.download = r.gallery[i].src.split('/').pop();
+        b.click();
+      });
       setStatus('ok',
         'Свалени са <code>recipes.json</code>' + (imageData ? ' и снимката' : '') + '.<br>' +
         'Сложи <code>recipes.json</code> в папка <code>data/</code>' +
@@ -974,6 +1079,11 @@
     });
 
     $('btn-github').addEventListener('click', publishToGithub);
+    $('btn-add-photo').addEventListener('click', function(){ $('f-gallery-file').click(); });
+    $('f-gallery-file').addEventListener('change', function(){
+      addGalleryFiles(this.files);
+      this.value = '';
+    });
     $('btn-gh-save').addEventListener('click', saveGh);
     $('btn-gh-forget').addEventListener('click', function(){
       localStorage.removeItem(GH_KEY);

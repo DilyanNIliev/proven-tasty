@@ -339,6 +339,16 @@ img.is-placeholder{ object-fit:contain !important; background:var(--cream-2); tr
   box-shadow: var(--shadow-lg); background:var(--line-soft);
 }
 .recipe-hero-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+/* Галерия: миниатюри под голямата снимка */
+.recipe-gallery{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:-14px 0 28px; }
+.gallery-thumb{
+  width:84px; aspect-ratio:4/3; padding:0; border:2px solid transparent; border-radius:var(--radius);
+  overflow:hidden; cursor:pointer; background:var(--line-soft); opacity:.7;
+  transition: opacity .2s var(--ease), border-color .2s var(--ease);
+}
+.gallery-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.gallery-thumb:hover, .gallery-thumb:focus-visible{ opacity:1; }
+.gallery-thumb.active{ border-color:var(--clay); opacity:1; }
 .recipe-actions{ display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:28px; }
 .recipe-meta-bar{
   display:flex; flex-wrap:wrap; gap:28px; justify-content:center;
@@ -735,7 +745,7 @@ footer{
    ========================================================================== */
 @media print{
   header, .cart-toggle, .shop-actions, .cta-band, footer,
-  .page-header .breadcrumb, .recipe-actions, .ad-slot, .mobile-menu, .mobile-menu-overlay,
+  .page-header .breadcrumb, .recipe-actions, .recipe-gallery, .ad-slot, .mobile-menu, .mobile-menu-overlay,
   .servings-box{ display:none !important; }
   body::before{ display:none; }
   body{ background:#fff; }
