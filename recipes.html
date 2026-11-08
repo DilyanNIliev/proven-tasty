@@ -77,17 +77,34 @@
   <p>Прости, високопротеинови и засищащи ястия — филтрирай по хранене и намери следващото си любимо блюдо.</p>
 
   <div class="filters" role="group" aria-label="Филтър по вид хранене">
-    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">53</span></button>
+    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">54</span></button>
     <button type="button" data-filter="breakfast" aria-pressed="false">Закуска <span class="count">20</span></button>
     <button type="button" data-filter="lunch" aria-pressed="false">Обяд <span class="count">7</span></button>
     <button type="button" data-filter="dinner" aria-pressed="false">Вечеря <span class="count">10</span></button>
-    <button type="button" data-filter="salad" aria-pressed="false">Салата <span class="count">1</span></button>
+    <button type="button" data-filter="salad" aria-pressed="false">Салата <span class="count">2</span></button>
     <button type="button" data-filter="dessert" aria-pressed="false">Десерт <span class="count">15</span></button>
   </div>
 </div>
 
 <section class="section" style="padding-top:20px;">
   <div class="grid" id="recipe-grid">
+    <a class="card" data-cat="salad" href="recipe-salata-zele-morkovi-cveklo-yaica.html">
+      <div class="card-img">
+        <span class="card-tag">Салата</span>
+        <button type="button" class="cart-toggle" data-recipe-id="salatazelecveklo" onclick="toggleCart('salatazelecveklo', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Салата от зеле, моркови и цвекло с варени яйца, извара и маслини в дълбока чиния" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Салата от зеле, цвекло и яйца</h3>
+        <p>Хрупкава зимна салата от прясно зеле, моркови, цвекло и ябълка, с варени яйца и извара — цяло засищащо хранене с над 30 г протеин.</p>
+        <div class="card-meta">
+          <span>⏱ 20 мин</span>
+          <span>🔥 530 ккал</span>
+        </div>
+      </div>
+    </a>
     <a class="card" data-cat="lunch" href="recipe-bulgur-domati-kurkuma.html">
       <div class="card-img">
         <span class="card-tag">Основно</span>
@@ -1020,7 +1037,7 @@
     © 2026 Доказано Вкусно — Приготвено с грижа за твоето хранене.
   </div>
 </footer>
-<script src="assets/recipes-data.js?v=4cf8a129"></script>
-<script src="assets/site.js?v=20778575"></script>
+<script src="assets/recipes-data.js?v=ff37090d"></script>
+<script src="assets/site.js?v=4561552b"></script>
 </body>
 </html>

@@ -278,7 +278,8 @@
   // Мащабира всяко количество в текста на съставката: „1,8 кг“, „½ ч.л.“, „2–3 с.л.“,
   // „(около 320 г)“. Не пипа калории, градуси и „по 40 г на брой“.
   var FRACTIONS = { '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 1 / 3, '⅔': 2 / 3 };
-  var QTY_RE = /(\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(?!\d|[.,]\d)(?!\s*(?:ккал|°|%|см|мин))/g;
+  // „1½“ е едно число (1,5), а не 1 и ½ поотделно
+  var QTY_RE = /(\d+[½¼¾⅓⅔]|\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(?!\d|[.,]\d)(?!\s*(?:ккал|°|%|см|мин))/g;
 
   function formatQty(v, hasDecimals) {
     if (hasDecimals) return String(Math.round(v * 10) / 10).replace('.', ',');
@@ -293,7 +294,9 @@
   function scaleText(text, factor) {
     return text.replace(QTY_RE, function (m, tok, offset, s) {
       if (/по\s*$/.test(s.slice(Math.max(0, offset - 4), offset))) return m;
-      var val = tok in FRACTIONS ? FRACTIONS[tok] : parseFloat(tok.replace(',', '.'));
+      var mixed = tok.match(/^(\d+)([½¼¾⅓⅔])$/);
+      var val = mixed ? parseInt(mixed[1], 10) + FRACTIONS[mixed[2]]
+        : tok in FRACTIONS ? FRACTIONS[tok] : parseFloat(tok.replace(',', '.'));
       return formatQty(val * factor, /[.,]/.test(tok));
     });
   }
