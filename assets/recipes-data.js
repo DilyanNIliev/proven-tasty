@@ -2,7 +2,7 @@
 window.RECIPES = [
  {
   "id": "kremsupaleshta",
-  "slug": "krem-supa-chervena-leshta-kartofi-kurkuma",
+  "slug": "krem-supa-chervena-leshta",
   "title": "Крем супа от червена леща",
   "cardTitle": "Крем супа от червена леща",
   "excerpt": "Кадифена крем супа от червена леща, картофи и зеленчуци с куркума — гъста и засищаща без сметана, готова за около 30 минути.",
