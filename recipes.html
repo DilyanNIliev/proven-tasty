@@ -77,9 +77,9 @@
   <p>Прости, високопротеинови и засищащи ястия — филтрирай по хранене и намери следващото си любимо блюдо.</p>
 
   <div class="filters" role="group" aria-label="Филтър по вид хранене">
-    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">55</span></button>
+    <button type="button" data-filter="all" class="active" aria-pressed="true">Всички <span class="count">56</span></button>
     <button type="button" data-filter="breakfast" aria-pressed="false">Закуска <span class="count">20</span></button>
-    <button type="button" data-filter="lunch" aria-pressed="false">Обяд <span class="count">7</span></button>
+    <button type="button" data-filter="lunch" aria-pressed="false">Обяд <span class="count">8</span></button>
     <button type="button" data-filter="dinner" aria-pressed="false">Вечеря <span class="count">10</span></button>
     <button type="button" data-filter="salad" aria-pressed="false">Салата <span class="count">2</span></button>
     <button type="button" data-filter="dessert" aria-pressed="false">Десерт <span class="count">16</span></button>
@@ -88,6 +88,23 @@
 
 <section class="section" style="padding-top:20px;">
   <div class="grid" id="recipe-grid">
+    <a class="card" data-cat="lunch" href="recipe-krem-supa-chervena-leshta-kartofi-kurkuma.html">
+      <div class="card-img">
+        <span class="card-tag">Супа</span>
+        <button type="button" class="cart-toggle" data-recipe-id="kremsupaleshta" onclick="toggleCart('kremsupaleshta', event)" aria-label="Добави в пазарския списък" title="Добави в списъка">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <img src="images/placeholder.svg" class="is-placeholder" alt="Оранжева крем супа от червена леща в купичка, украсена с листенце мента" loading="lazy" decoding="async" width="700" height="525">
+      </div>
+      <div class="card-body">
+        <h3 class="display">Крем супа от червена леща</h3>
+        <p>Кадифена крем супа от червена леща, картофи и зеленчуци с куркума — гъста и засищаща без сметана, готова за около 30 минути.</p>
+        <div class="card-meta">
+          <span>⏱ 30 мин</span>
+          <span>🔥 451 ккал</span>
+        </div>
+      </div>
+    </a>
     <a class="card" data-cat="dessert" href="recipe-fach-kakaov-sladkish-kiselo-mlyako.html">
       <div class="card-img">
         <span class="card-tag">Десерт</span>
@@ -1054,7 +1071,7 @@
     © 2026 Доказано Вкусно — Приготвено с грижа за твоето хранене.
   </div>
 </footer>
-<script src="assets/recipes-data.js?v=eb2733b3"></script>
+<script src="assets/recipes-data.js?v=5e600a57"></script>
 <script src="assets/site.js?v=4561552b"></script>
 </body>
 </html>
