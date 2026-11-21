@@ -359,6 +359,7 @@
             Използвай <strong>fine-grained token</strong> само за това хранилище с права
             <strong>Contents: Read and write</strong>. Не отваряй тази страница на чужд компютър.
           </div>
+          <div class="hint" style="margin:10px 0 4px;">Потребителят, хранилището и клонът са попълнени предварително — обикновено трябва само токенът. Отваряй тази страница винаги в един и същ браузър (напр. Chrome), а не от линк в чат приложение: там браузърът е отделен и не помни токена.</div>
           <div class="row c2">
             <label class="field"><span>Потребител / организация</span><input type="text" id="gh-owner" placeholder="DilyanNIliev"></label>
             <label class="field"><span>Хранилище</span><input type="text" id="gh-repo" placeholder="proven-tasty"></label>
@@ -368,7 +369,7 @@
             <label class="field"><span>Токен</span><input type="password" id="gh-token" placeholder="github_pat_..."></label>
           </div>
           <div class="btn-row">
-            <button class="ui small" type="button" id="btn-gh-save">Запази настройките</button>
+            <button class="ui small" type="button" id="btn-gh-save">Запази и провери</button>
             <button class="ui small" type="button" id="btn-gh-forget">Изтрий токена</button>
           </div>
         </details>
@@ -735,7 +736,7 @@
   function loadRecipes(){
     var s = ghSettings();
     // с токен четем направо от GitHub — там е най-новото, дори сайтът още да се обновява
-    var fromGithub = (s.owner && s.repo && s.token) ? ghLoadList().catch(function(){ return null; })
+    var fromGithub = s.token ? ghLoadList().catch(function(){ return null; })
                                                     : Promise.resolve(null);
     fromGithub
       .then(function(list){
@@ -853,29 +854,56 @@
 
   /* ---------- GitHub ---------- */
   var GH_KEY = 'pt_gh_settings';
+  // хранилището на сайта — попълва се само, за да не се въвежда всеки път
+  var GH_DEFAULTS = { owner: 'DilyanNIliev', repo: 'proven-tasty', branch: 'main' };
   function ghSettings(){
-    try { return JSON.parse(localStorage.getItem(GH_KEY) || '{}'); } catch(e){ return {}; }
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(GH_KEY) || '{}') || {}; } catch(e){}
+    return {
+      owner: saved.owner || GH_DEFAULTS.owner,
+      repo: saved.repo || GH_DEFAULTS.repo,
+      branch: saved.branch || GH_DEFAULTS.branch,
+      token: saved.token || ''
+    };
   }
   function loadGh(){
     var s = ghSettings();
-    $('gh-owner').value = s.owner || '';
-    $('gh-repo').value = s.repo || '';
-    $('gh-branch').value = s.branch || 'main';
-    $('gh-token').value = s.token || '';
+    $('gh-owner').value = s.owner;
+    $('gh-repo').value = s.repo;
+    $('gh-branch').value = s.branch;
+    $('gh-token').value = s.token;
   }
   function saveGh(){
     localStorage.setItem(GH_KEY, JSON.stringify({
-      owner: $('gh-owner').value.trim(),
-      repo: $('gh-repo').value.trim(),
-      branch: $('gh-branch').value.trim() || 'main',
-      token: $('gh-token').value.trim()
+      owner: $('gh-owner').value.trim() || GH_DEFAULTS.owner,
+      repo: $('gh-repo').value.trim() || GH_DEFAULTS.repo,
+      branch: $('gh-branch').value.trim() || GH_DEFAULTS.branch,
+      // при копиране от телефона често се хващат интервали или нов ред
+      token: $('gh-token').value.replace(/\s+/g, '')
     }));
-    setStatus('ok', 'Настройките са запазени в този браузър.');
+    loadGh();
+    // молим браузъра да не изчиства данните на страницата сам
+    if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
+    setStatus('info', 'Запазено. Проверявам връзката с GitHub…');
+    ghApi('').then(function(res){
+      if (res.ok) setStatus('ok', '<strong>Връзката работи.</strong> Токенът е запазен в този браузър и няма нужда да го въвеждаш отново.');
+      else setStatus('err', ghErrorText(res.status));
+    }).catch(function(){
+      setStatus('err', 'Няма връзка с GitHub. Провери интернета и опитай пак.');
+    });
+  }
+
+  // разбираемо обяснение вместо голия код на грешката
+  function ghErrorText(status){
+    if (status === 401) return '<strong>Токенът не е валиден или е изтекъл.</strong> Направи нов в GitHub → Settings → Developer settings → Fine-grained tokens (за proven-tasty, Contents: Read and write) и го постави тук.';
+    if (status === 403) return '<strong>Токенът няма права за запис.</strong> В настройките на токена дай Contents: <em>Read and write</em> за proven-tasty.';
+    if (status === 404) return '<strong>Токенът няма достъп до хранилището.</strong> При създаване избери Only select repositories → proven-tasty, или провери името на потребителя и хранилището.';
+    return 'GitHub върна грешка ' + status + '. Опитай пак след малко.';
   }
 
   function ghApi(path, opts){
     var s = ghSettings();
-    return fetch('https://api.github.com/repos/' + s.owner + '/' + s.repo + '/' + path,
+    return fetch('https://api.github.com/repos/' + s.owner + '/' + s.repo + (path ? '/' + path : ''),
       Object.assign({ headers: {
         'Authorization': 'Bearer ' + s.token,
         'Accept': 'application/vnd.github+json'
@@ -905,9 +933,11 @@
         });
       })
       .then(function(res){
-        if (!res.ok) return res.json().then(function(j){
-          throw new Error(path + ': ' + (j.message || res.status));
-        });
+        if (!res.ok) {
+          var err = new Error(path + ': ' + res.status);
+          err.status = res.status;
+          throw err;
+        }
         return res.json();
       });
   }
@@ -921,15 +951,19 @@
       headers: { 'Authorization': 'Bearer ' + s.token, 'Accept': 'application/vnd.github.raw+json' },
       cache: 'no-store'
     }).then(function(res){
-      if (!res.ok) throw new Error('data/recipes.json: ' + res.status);
+      if (!res.ok) {
+        var err = new Error('data/recipes.json: ' + res.status);
+        err.status = res.status;
+        throw err;
+      }
       return res.json();
     });
   }
 
   function publishToGithub(){
     var s = ghSettings();
-    if (!s.owner || !s.repo || !s.token){
-      setStatus('err', 'Първо попълни настройките за GitHub долу (потребител, хранилище и токен).');
+    if (!s.token){
+      setStatus('err', 'Липсва токен. Отвори „Настройки за GitHub“ долу, постави токена и натисни „Запази и провери“.');
       $('gh-settings').open = true;
       return;
     }
@@ -978,8 +1012,8 @@
           '<code>recipe-' + esc(r.slug) + '.html</code> и всички менюта ще се обновят до минута-две.');
       })
       .catch(function(e){
-        setStatus('err', 'Грешка: ' + esc(e.message) +
-          '<br>Провери токена, името на хранилището и клона.');
+        setStatus('err', e.status ? ghErrorText(e.status) : 'Грешка: ' + esc(e.message));
+        if (e.status === 401 || e.status === 403 || e.status === 404) $('gh-settings').open = true;
       })
       .then(function(){ btn.disabled = false; });
   }
